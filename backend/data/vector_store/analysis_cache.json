@@ -1,0 +1,86 @@
+{
+  "2119174 - SFC_Position_on_Instant_Credit_Transfers_in_Euro_-_Amending_the_SEPA_Regulation_.pdf": {
+    "regulatorySummary": {
+      "purpose": "The purpose of the amendments to the SEPA Regulation is to enhance the efficiency and security of payment systems within the EU by promoting the adoption of instant credit transfers in euro. This initiative aims to ensure that instant payments become a standard offering across payment service providers, thereby improving transaction speeds and supporting the digital economy.",
+      "scope": "The amendments apply to all payment service providers operating within the EU, requiring them to offer instant credit transfer services alongside traditional credit transfer services. The regulation covers both national and cross-border credit transfers in euro, aiming to standardize the execution time and charges associated with these transactions.",
+      "relevance": "The relevance of these regulatory changes is particularly significant for financial institutions that engage in high volumes of euro-denominated transactions. By mandating the provision of instant credit transfers, the regulation seeks to enhance the competitiveness of European financial markets and improve the overall user experience for consumers and businesses."
+    },
+    "impactAssessment": {
+      "introduction": "The proposed amendments to the SEPA Regulation are expected to have a profound impact on various aspects of financial operations, from transaction processing speeds to the competitive landscape of payment services within the EU.",
+      "affectedAreas": [
+        {
+          "area": null,
+          "impact": "The requirement for payment service providers to offer instant credit transfers will necessitate significant infrastructural upgrades and adjustments in operational procedures to handle real-time transaction processing and compliance with enhanced security measures."
+        },
+        {
+          "area": null,
+          "impact": "The availability of instant credit transfers is likely to raise client expectations regarding transaction speeds and service quality. Financial institutions will need to enhance client communication and support services to address these expectations effectively."
+        },
+        {
+          "area": null,
+          "impact": "Instant credit transfers will require more dynamic liquidity management and forecasting models to manage the increased speed and frequency of transactions, impacting daily treasury operations."
+        },
+        {
+          "area": null,
+          "impact": "The shift to instant credit transfers will increase the complexity of reconciliation processes, as financial institutions will need to ensure that their internal records are updated in real-time to reflect instant transactions accurately."
+        }
+      ]
+    },
+    "keyDates": [
+      {
+        "date": "26 October 2022",
+        "event": "Start of the evaluation period for the development of charges for payment accounts and credit transfers as stipulated by the SEPA Regulation.",
+        "regulation": "SEPA Regulation"
+      },
+      {
+        "date": "13 March 2024",
+        "event": "Publication of Regulation (EU) 2024/886 amending SEPA Regulation regarding instant credit transfers in euro.",
+        "regulation": "Regulation (EU) 2024/886"
+      },
+      {
+        "date": "19 March 2024",
+        "event": "Publication of the Instant Payment Regulation (IPR) amending the SEPA Regulation.",
+        "regulation": "Instant Payment Regulation (IPR)"
+      },
+      {
+        "date": "9 October 2028",
+        "event": "Deadline for the European Commission to submit a report evaluating the impact of Article 5b(1) on charges for credit transfers.",
+        "regulation": "SEPA Regulation"
+      }
+    ],
+    "heatmapData": {
+      "AMO": {
+        "score": 0,
+        "level": "None"
+      },
+      "COO Ops Americas": {
+        "score": 0,
+        "level": "None"
+      },
+      "COO Ops S&I": {
+        "score": 4,
+        "level": "Low"
+      },
+      "GOTO Operations & COO": {
+        "score": 8,
+        "level": "Low"
+      },
+      "IB Operations (BA)": {
+        "score": 0,
+        "level": "None"
+      },
+      "P&C Operations": {
+        "score": 42,
+        "level": "High"
+      },
+      "Treasury": {
+        "score": 0,
+        "level": "None"
+      }
+    },
+    "impactedLifecycles": [
+      "Payments",
+      "Transaction Screening"
+    ]
+  }
+}
