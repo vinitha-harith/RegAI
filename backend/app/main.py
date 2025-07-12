@@ -7,6 +7,7 @@ from fastapi import FastAPI, HTTPException, UploadFile, File # Import UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 # from .services.rag_builder import analyze_document_logic, chat_with_documents_logic, load_analysis_cache, save_analysis_cache
 from .services.ingestion import process_pdfs_incrementally, load_metadata_db, save_metadata_db
+from fastapi.responses import FileResponse
 # --- Import new models ---
 # from .api.models import (
 #     AnalyzeRequest, DocumentListResponse, ChatRequest, 
@@ -54,6 +55,7 @@ app.add_middleware(
 )
 
 DASHBOARD_DATA_FILE = "dashboard_data.json"
+DOCUMENTS_DIR = "./data/pdfs_to_process"
 
 @app.post("/api/save_dashboard")
 async def save_dashboard(data: DashboardData):
@@ -109,6 +111,9 @@ async def upload_document(file: UploadFile = File(...)):
     upload_dir = "./data/pdfs_to_process"
     os.makedirs(upload_dir, exist_ok=True)
 
+    if not file.filename:
+        raise HTTPException(status_code=400, detail="No filename provided.")
+    
     file_path = os.path.join(upload_dir, file.filename)
 
     try:
@@ -169,6 +174,21 @@ def save_analysis_to_cache(document_name: str, analysis_result: AnalysisResultMo
     cache[document_name] = analysis_result.model_dump() 
     save_analysis_cache(cache)
     return {"message": "Analysis successfully saved."}
+
+
+@app.get("/api/documents/{file_name}")
+async def get_document(file_name: str):
+    """Serves a static PDF file from the documents directory."""
+    # Basic security to prevent path traversal attacks
+    if ".." in file_name or file_name.startswith("/"):
+        raise HTTPException(status_code=400, detail="Invalid file name.")
+        
+    file_path = os.path.join(DOCUMENTS_DIR, file_name)
+    
+    if not os.path.exists(file_path):
+        raise HTTPException(status_code=404, detail="File not found.")
+        
+    return FileResponse(file_path, media_type='application/pdf', filename=file_name)
 
 
 # --- ADD THE NEW CHAT ENDPOINT ---

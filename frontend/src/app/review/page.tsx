@@ -9,6 +9,7 @@ import { DocumentSelector } from '@/app/components/DocumentSelector';
 import { Heatmap } from '@/app/components/Heatmap';
 import { ImpactedLifecyclesCard } from '@/app/components/ImpactedLifecyclesCard';
 import { Loader2, Search, Info, Save, CheckCircle, AlertCircle, Send } from 'lucide-react';
+import PdfViewer from "@/app/components/PdfViewer"; 
 
 type PageStatus = 'idle' | 'loadingCache' | 'loadingAnalysis' | 'displayingCache' | 'displayingNew' | 'error';
 
@@ -21,6 +22,8 @@ export default function ReviewPage() {
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved'>('idle');
 
   const [notificationStatus, setNotificationStatus] = useState<'idle' | 'sending' | 'sent'>('idle');
+
+  const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
   const impactedDivisions = useMemo(() => {
     if (!analysis?.heatmapData) return [];
@@ -52,6 +55,7 @@ export default function ReviewPage() {
       if (!selectedDocument) {
           setAnalysis(null);
           setStatus('idle'); // When deselected, go back to idle
+          setPdfUrl(null);
           return;
       }
 
@@ -60,6 +64,7 @@ export default function ReviewPage() {
           setErrorMessage(''); // Clear previous errors
           setSaveStatus('idle'); // Reset save status
           setAnalysis(null); // Clear previous analysis
+          setPdfUrl(null);
 
           try {
               const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/cache/${selectedDocument}`);
@@ -75,6 +80,14 @@ export default function ReviewPage() {
               const data: AnalysisResult = await res.json();
               setAnalysis(data);
               setStatus('displayingCache'); // We have cached data to show
+
+            // MODIFICATION: Set the PDF URL after data is loaded
+            if (data) {
+                setPdfUrl(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/documents/${selectedDocument}`);
+            } else {
+                setPdfUrl(null); // Ensure no old PDF is shown if data load fails
+            }
+
           } catch (e) {
               setStatus('error');
               setErrorMessage(e instanceof Error ? e.message : 'An error occurred while checking the cache.');
@@ -90,6 +103,7 @@ export default function ReviewPage() {
       setErrorMessage('');
       setSaveStatus('idle');
       setAnalysis(null);
+      setPdfUrl(null);
 
       try {
           const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/analyze`, {
@@ -105,6 +119,13 @@ export default function ReviewPage() {
           setAnalysis(data);
           setStatus('displayingNew'); // A new analysis is ready to be viewed and saved
           //console.log(data);
+
+          // MODIFICATION: Set the PDF URL after data is loaded
+          if (data) {
+            setPdfUrl(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/documents/${selectedDocument}`);
+          } else {
+            setPdfUrl(null); // Ensure no old PDF is shown if data load fails
+          }
       } catch (e) {
           setStatus('error');
           setErrorMessage(e instanceof Error ? e.message : 'A critical error occurred during analysis.');
@@ -205,14 +226,16 @@ export default function ReviewPage() {
           )}
 
           {analysis && (status === 'displayingCache' || status === 'displayingNew') && (
-              <div className="space-y-8">
+            <>
+                {/* Full-width components before RegulatorySummary */}
+                <div className="mt-8 space-y-8">
                     {/* --- THE NEW "ACTIONS" HEADER --- */}
-                    <div className="p-4 bg-white rounded-lg shadow-sm border flex flex-wrap justify-between items-center gap-4">
+                    <div className="flex items-center justify-between">
                         <div>
                             {status === 'displayingCache' ? (
-                                <p className="font-semibold text-sm text-red-800">Displaying saved analysis.</p>
+                                <p className="font-semibold text-lg text-red-700">Displaying saved analysis.</p>
                             ) : (
-                                <p className="font-semibold text-sm text-green-800">New analysis generated. Click "Save Results" to persist.</p>
+                                <p className="font-semibold text-lg text-green-800">New analysis generated. Click "Save Results" to persist.</p>
                             )}
                         </div>
                         <button
@@ -240,16 +263,37 @@ export default function ReviewPage() {
                         </button>
                     </div>
                     {/* --- End of Actions Header --- */}
-                  <RegulatoryInfo info={analysis.documentInfo} />
-                  {analysis.heatmapData && <Heatmap data={analysis.heatmapData} />}
-                  {analysis.impactedLifecycles && <ImpactedLifecyclesCard lifecycles={analysis.impactedLifecycles} />}
-                  <RegulatorySummary summary={analysis.regulatorySummary} />
-                  <ImpactAssessment assessment={analysis.impactAssessment} />
-                  <Timeline dates={analysis.keyDates} />
-              </div>
+                    <RegulatoryInfo info={analysis.documentInfo} />
+                    {analysis.heatmapData && <Heatmap data={analysis.heatmapData} />}
+                    {analysis.impactedLifecycles && <ImpactedLifecyclesCard lifecycles={analysis.impactedLifecycles} />}
+                </div>
+
+                {/* Two-column layout starting from RegulatorySummary */}
+                <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8" style={{ height: 'calc(100vh - 400px)' }}>
+                    {/* Left Column: Review Details */}
+                    <div className="flex flex-col space-y-8 overflow-y-auto pr-4">
+                        <RegulatorySummary summary={analysis.regulatorySummary} />
+                        <ImpactAssessment assessment={analysis.impactAssessment} />
+                        <Timeline dates={analysis.keyDates} />
+                    </div>
+
+                    {/* Right Column: PDF Document Viewer */}
+                    <div className="h-full overflow-hidden">
+                        {pdfUrl ? (
+                            <div className="h-full overflow-y-auto">
+                                <PdfViewer fileUrl={pdfUrl} />
+                            </div>
+                        ) : (
+                            <div className="flex items-center justify-center h-full bg-gray-100 rounded-lg border-2 border-dashed">
+                                <p className="text-gray-500">No document to display.</p>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </>
           )}
 
-          {status === 'idle' && !Error && (
+          {status === 'idle' && !errorMessage && (
               <div className="text-center p-12 bg-white rounded-lg shadow-md border">
                   <Info className="mx-auto h-12 w-12 text-gray-400" />
                   <h2 className="mt-2 text-xl font-semibold text-gray-700">Ready for Analysis</h2>

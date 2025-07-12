@@ -47,7 +47,7 @@ export interface HeatmapProps {
 export interface AnalysisResult {
     impactAssessment: ImpactAssessment;
     regulatorySummary: RegulatorySummary;
-    keyDates: KeyDate;
+    keyDates: KeyDate[];
     heatmapData: HeatmapData;
     impactedLifecycles: string[];
     documentInfo: DocumentInfo;

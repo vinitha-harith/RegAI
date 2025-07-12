@@ -4,56 +4,55 @@
         "factors": [
             "Systemic interconnectedness and risk of contagion among global financial institutions",
             "High reliance on external credit ratings leading to potential cliff effects",
-            "Counterparty credit risks including wrong-way risks and concentration risks",
+            "Counterparty credit risk and potential default risks from highly leveraged entities",
             "Procyclicality amplifying financial shocks and market volatility"
         ],
         "mitigations": [
             "Implementing stricter liquidity and capital requirements including LCR and NSFR",
             "Reducing reliance on external credit ratings by enhancing internal risk assessment capabilities",
             "Strengthening counterparty credit risk management and stress testing frameworks",
-            "Introducing countercyclical capital buffers and enhancing risk coverage"
+            "Introducing countercyclical capital buffers and dynamic provisioning to mitigate procyclicality"
         ]
     },
     "impactAnalysis": [
         {
             "title": "Operational Impact",
-            "description": "Implementation of enhanced regulatory requirements will require upgrades to risk management systems and processes, potentially increasing operational costs."
+            "description": "Implementation of enhanced risk management practices may increase operational complexity but will improve resilience against financial shocks."
         },
         {
             "title": "Financial Impact",
-            "description": "Higher capital and liquidity requirements may reduce profitability but increase resilience against financial shocks."
+            "description": "Higher capital and liquidity requirements could reduce profitability in the short term but are expected to stabilize earnings over the long term."
         },
         {
-            "title": "Strategic Impact",
-            "description": "Banks may need to adjust their business models to comply with new regulatory standards, affecting their market positioning and competitive dynamics."
+            "title": "Regulatory Compliance Impact",
+            "description": "Adhering to new regulatory standards will require updates to compliance frameworks, potentially increasing compliance costs."
         }
     ],
     "recommendations": {
         "immediate": [
             "Review and update liquidity management policies to comply with global liquidity standards.",
-            "Conduct a comprehensive review of exposure to systemically important financial institutions."
+            "Begin internal development of enhanced stress testing models as per Basel III requirements."
         ],
         "short_term": [
-            "Develop internal models for more accurate risk assessment, reducing dependency on external credit ratings.",
-            "Enhance stress testing practices to cover a range of economic and market scenarios."
+            "Implement a robust framework for the independent review of risk management processes.",
+            "Enhance data integrity and management information systems to support better decision-making."
         ],
         "long_term": [
-            "Build robust capital conservation buffers to withstand periods of economic stress.",
-            "Invest in technology to improve real-time data analysis and risk monitoring capabilities."
+            "Develop and maintain strong capital buffers above regulatory minimums to safeguard against future crises.",
+            "Invest in technology and training to improve risk assessment and management capabilities across the organization."
         ]
     },
     "upcomingDates": [],
     "regionalRelevance": [
-        "EU",
-        "Global",
-        "Americas"
+        "Americas",
+        "EU"
     ],
     "topCategories": [
-        "IB",
-        "COO",
         "GOTO",
         "P&C",
-        "AMO"
+        "AMO",
+        "IB",
+        "COO"
     ],
     "sourceDocuments": [
         "2090347 - The-Importance-of-Reforming-the-EU-Benchmarks-Regulation.pdf",
@@ -66,26 +65,29 @@
     "filteredMetadata": {
         "2090347 - The-Importance-of-Reforming-the-EU-Benchmarks-Regulation.pdf": {
             "author": "European Union",
+            "publication_date": "2022-08-12",
             "tags": [
                 "AMO",
+                "COO",
                 "GOTO",
-                "IB"
+                "IB",
+                "P&C"
             ],
             "regions": [
-                "Global"
+                "Americas"
             ],
             "heatmapData": {
                 "AMO": {
-                    "score": 2,
+                    "score": 5,
                     "level": "Low"
                 },
                 "COO Ops Americas": {
-                    "score": 0,
-                    "level": "None"
+                    "score": 3,
+                    "level": "Low"
                 },
                 "COO Ops S&I": {
-                    "score": 0,
-                    "level": "None"
+                    "score": 5,
+                    "level": "Low"
                 },
                 "GOTO Operations & COO": {
                     "score": 17,
@@ -96,8 +98,8 @@
                     "level": "Low"
                 },
                 "P&C Operations": {
-                    "score": 0,
-                    "level": "None"
+                    "score": 2,
+                    "level": "Low"
                 },
                 "Treasury": {
                     "score": 0,
@@ -105,6 +107,7 @@
                 }
             },
             "impactedLifecycles": [
+                "Client Reporting",
                 "Data Management Office",
                 "Market Data Management",
                 "Transaction Reporting"
@@ -112,12 +115,15 @@
         },
         "2107316 - EBF-Position-on-Proposal-for-Instant-Payments-Regulation-1.pdf": {
             "author": "European Banking Federation",
+            "publication_date": "2023-01-26",
             "tags": [
                 "COO",
+                "IB",
                 "P&C"
             ],
             "regions": [
-                "Global"
+                "Americas",
+                "EU"
             ],
             "heatmapData": {
                 "AMO": {
@@ -125,109 +131,20 @@
                     "level": "None"
                 },
                 "COO Ops Americas": {
-                    "score": 0,
-                    "level": "None"
-                },
-                "COO Ops S&I": {
-                    "score": 4,
-                    "level": "Low"
-                },
-                "GOTO Operations & COO": {
-                    "score": 0,
-                    "level": "None"
-                },
-                "IB Operations (BA)": {
-                    "score": 0,
-                    "level": "None"
-                },
-                "P&C Operations": {
-                    "score": 42,
-                    "level": "High"
-                },
-                "Treasury": {
-                    "score": 0,
-                    "level": "None"
-                }
-            },
-            "impactedLifecycles": [
-                "Payments"
-            ]
-        },
-        "bcbs189.pdf": {
-            "author": "Basel Committee on Banking Supervision",
-            "tags": [
-                "COO",
-                "IB"
-            ],
-            "regions": [
-                "Americas"
-            ],
-            "heatmapData": {
-                "AMO": {
-                    "score": 0,
-                    "level": "None"
-                },
-                "COO Ops Americas": {
-                    "score": 1,
+                    "score": 6,
                     "level": "Low"
                 },
                 "COO Ops S&I": {
-                    "score": 1,
-                    "level": "Low"
-                },
-                "GOTO Operations & COO": {
-                    "score": 0,
-                    "level": "None"
-                },
-                "IB Operations (BA)": {
                     "score": 12,
                     "level": "Medium"
                 },
-                "P&C Operations": {
-                    "score": 0,
-                    "level": "None"
-                },
-                "Treasury": {
-                    "score": 0,
-                    "level": "None"
-                }
-            },
-            "impactedLifecycles": [
-                "Collateral & Margin Management",
-                "Credit Services",
-                "Risk Management / Oversight"
-            ]
-        },
-        "2119174 - SFC_Position_on_Instant_Credit_Transfers_in_Euro_-_Amending_the_SEPA_Regulation_.pdf": {
-            "author": "Swiss Finance Council",
-            "tags": [
-                "COO",
-                "GOTO",
-                "P&C"
-            ],
-            "regions": [
-                "Global"
-            ],
-            "heatmapData": {
-                "AMO": {
-                    "score": 0,
-                    "level": "None"
-                },
-                "COO Ops Americas": {
-                    "score": 0,
-                    "level": "None"
-                },
-                "COO Ops S&I": {
-                    "score": 4,
-                    "level": "Low"
-                },
                 "GOTO Operations & COO": {
-                    "score": 8,
-                    "level": "Low"
+                    "score": 0,
+                    "level": "None"
                 },
                 "IB Operations (BA)": {
-                    "score": 0,
-                    "level": "None"
+                    "score": 1,
+                    "level": "Low"
                 },
                 "P&C Operations": {
                     "score": 42,
@@ -240,11 +157,115 @@
             },
             "impactedLifecycles": [
                 "Payments",
+                "Client Servicing (Institutional)",
+                "Client Servicing (retail / Individual / Family Offices)",
+                "Credit Services",
+                "Risk Management"
+            ]
+        },
+        "bcbs189.pdf": {
+            "author": "Basel Committee on Banking Supervision",
+            "publication_date": "2010-12-12",
+            "tags": [
+                "AMO",
+                "COO",
+                "IB",
+                "P&C"
+            ],
+            "regions": [
+                "Americas"
+            ],
+            "heatmapData": {
+                "AMO": {
+                    "score": 2,
+                    "level": "Low"
+                },
+                "COO Ops Americas": {
+                    "score": 1,
+                    "level": "Low"
+                },
+                "COO Ops S&I": {
+                    "score": 4,
+                    "level": "Low"
+                },
+                "GOTO Operations & COO": {
+                    "score": 0,
+                    "level": "None"
+                },
+                "IB Operations (BA)": {
+                    "score": 12,
+                    "level": "Medium"
+                },
+                "P&C Operations": {
+                    "score": 11,
+                    "level": "Medium"
+                },
+                "Treasury": {
+                    "score": 0,
+                    "level": "None"
+                }
+            },
+            "impactedLifecycles": [
+                "Balance Sheet Substantiation",
+                "Cash Management (Treasury Services)",
+                "Collateral & Margin Management",
+                "Credit Services",
+                "Global Loans Processing",
+                "Risk Management"
+            ]
+        },
+        "2119174 - SFC_Position_on_Instant_Credit_Transfers_in_Euro_-_Amending_the_SEPA_Regulation_.pdf": {
+            "author": "Swiss Finance Council",
+            "publication_date": "2023-05-12",
+            "tags": [
+                "COO",
+                "GOTO",
+                "IB",
+                "P&C"
+            ],
+            "regions": [
+                "Americas"
+            ],
+            "heatmapData": {
+                "AMO": {
+                    "score": 0,
+                    "level": "None"
+                },
+                "COO Ops Americas": {
+                    "score": 6,
+                    "level": "Low"
+                },
+                "COO Ops S&I": {
+                    "score": 12,
+                    "level": "Medium"
+                },
+                "GOTO Operations & COO": {
+                    "score": 8,
+                    "level": "Low"
+                },
+                "IB Operations (BA)": {
+                    "score": 1,
+                    "level": "Low"
+                },
+                "P&C Operations": {
+                    "score": 42,
+                    "level": "High"
+                },
+                "Treasury": {
+                    "score": 0,
+                    "level": "None"
+                }
+            },
+            "impactedLifecycles": [
+                "Payments",
+                "Client Servicing (Institutional)",
+                "Client Servicing (retail / Individual / Family Offices)",
                 "Transaction Screening"
             ]
         },
         "The-AI-Act.pdf": {
             "author": "European Commission",
+            "publication_date": "2021-04-21",
             "tags": [
                 "COO",
                 "GOTO",
@@ -293,39 +314,39 @@
         },
         "2164081 - Draft Implementing Technical Standards on uniform reporting under SEPA.pdf": {
             "author": "EBA",
+            "publication_date": "2025-02-04",
             "tags": [
                 "AMO",
                 "COO",
-                "GOTO",
                 "IB",
                 "P&C"
             ],
             "regions": [
-                "Global"
+                "Americas"
             ],
             "heatmapData": {
                 "AMO": {
-                    "score": 2,
+                    "score": 5,
                     "level": "Low"
                 },
                 "COO Ops Americas": {
-                    "score": 0,
-                    "level": "None"
+                    "score": 3,
+                    "level": "Low"
                 },
                 "COO Ops S&I": {
-                    "score": 4,
+                    "score": 9,
                     "level": "Low"
                 },
                 "GOTO Operations & COO": {
-                    "score": 8,
-                    "level": "Low"
+                    "score": 0,
+                    "level": "None"
                 },
                 "IB Operations (BA)": {
                     "score": 7,
                     "level": "Low"
                 },
                 "P&C Operations": {
-                    "score": 42,
+                    "score": 44,
                     "level": "High"
                 },
                 "Treasury": {
@@ -336,7 +357,7 @@
             "impactedLifecycles": [
                 "Payments",
                 "Transaction Reporting",
-                "Transaction Screening"
+                "Client Reporting"
             ]
         }
     }

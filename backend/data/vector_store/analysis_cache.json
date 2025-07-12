@@ -182,5 +182,97 @@
       "author": "European Union",
       "publication_date": "2022-08-12"
     }
+  },
+  "2107316 - EBF-Position-on-Proposal-for-Instant-Payments-Regulation-1.pdf": {
+    "regulatorySummary": {
+      "purpose": "The purpose of the Instant Payment Regulation (IPR) is to establish a framework for instant euro-denominated credit transfers across the European Union. This regulation aims to enhance the efficiency of payments within the EU by reducing the time it takes for transactions to be processed, thereby improving liquidity management and customer experience. It also seeks to foster innovation and competition among Payment Service Providers (PSPs) by standardizing the requirements for instant payments.",
+      "scope": "The scope of the IPR includes all credit institutions within the EU that offer euro-denominated credit transfers. It mandates these institutions to provide instant payment services to their customers through all available channels. This regulation also covers the reporting requirements and operational standards that PSPs must adhere to, ensuring compliance with EU sanctions and other regulatory frameworks.",
+      "relevance": "The relevance of the IPR is significant in the context of the digital transformation of the financial sector. By facilitating instant payments, the regulation supports the EU's broader objectives of creating a more integrated and efficient European payments market. It also addresses the need for rapid transaction processing which is critical in the modern economy where speed and efficiency are paramount."
+    },
+    "impactAssessment": {
+      "introduction": "The introduction of the Instant Payment Regulation is expected to have a profound impact on various aspects of business operations for PSPs and financial institutions. This includes changes to payment processing systems, liquidity management, fraud detection, and compliance with regulatory standards.",
+      "affectedAreas": [
+        {
+          "area": null,
+          "impact": "The Payments lifecycle will undergo significant changes as PSPs will need to upgrade their systems to handle instant processing of transactions. This includes technical enhancements to support real-time data handling and integration with EU-wide instant payment platforms. Additionally, PSPs will face increased operational costs and will need to ensure their systems are robust enough to handle the higher volume of transactions without compromising on security."
+        },
+        {
+          "area": null,
+          "impact": "Transaction Screening will be critically affected as PSPs must implement real-time screening of transactions to comply with EU sanctions and anti-money laundering regulations. This will require sophisticated technology to manage false positives and ensure legitimate transactions are not unduly delayed, balancing compliance with efficiency."
+        },
+        {
+          "area": null,
+          "impact": "Under the IPR, PSPs are required to provide detailed reports on instant payment transactions, including volumes and values of transactions processed instantly. This will necessitate enhancements in data collection and reporting systems to ensure accuracy and timeliness of the information provided to clients and regulators."
+        },
+        {
+          "area": null,
+          "impact": "Compliance monitoring will need to be intensified to ensure ongoing adherence to the new regulatory requirements introduced by the IPR. PSPs will need to continuously evaluate their compliance frameworks to address any discrepancies in real-time transaction processing and reporting."
+        }
+      ]
+    },
+    "keyDates": [
+      {
+        "date": "26 January 2023",
+        "event": "Publication of the EBF position on Proposal for Instant Payment Regulation",
+        "regulation": "Instant Payment Regulation"
+      },
+      {
+        "date": "19 March 2024",
+        "event": "Publication of the Instant Payment Regulation in the Official Journal of the European Union",
+        "regulation": "Instant Payment Regulation"
+      },
+      {
+        "date": "31 October 2024",
+        "event": "End of public consultation period for the draft proposal",
+        "regulation": "Instant Payment Regulation"
+      },
+      {
+        "date": "9 January 2025",
+        "event": "New sanction screening requirements come into force",
+        "regulation": "Instant Payment Regulation"
+      }
+    ],
+    "heatmapData": {
+      "AMO": {
+        "score": 0,
+        "level": "None"
+      },
+      "COO Ops Americas": {
+        "score": 6,
+        "level": "Low"
+      },
+      "COO Ops S&I": {
+        "score": 12,
+        "level": "Medium"
+      },
+      "GOTO Operations & COO": {
+        "score": 0,
+        "level": "None"
+      },
+      "IB Operations (BA)": {
+        "score": 1,
+        "level": "Low"
+      },
+      "P&C Operations": {
+        "score": 42,
+        "level": "High"
+      },
+      "Treasury": {
+        "score": 0,
+        "level": "None"
+      }
+    },
+    "impactedLifecycles": [
+      "Payments",
+      "Client Servicing (Institutional)",
+      "Client Servicing (retail / Individual / Family Offices)",
+      "Credit Services",
+      "Risk Management"
+    ],
+    "documentInfo": {
+      "title": "2107316 - EBF-Position-on-Proposal-for-Instant-Payments-Regulation-1.pdf",
+      "author": "European Banking Federation",
+      "publication_date": "2023-01-26"
+    }
   }
 }
