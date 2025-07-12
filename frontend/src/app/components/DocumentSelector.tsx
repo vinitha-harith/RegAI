@@ -17,7 +17,7 @@ export const DocumentSelector = ({ documents, selectedDocument, onSelectDocument
         className="inline-flex items-center justify-between rounded-md px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 shadow-sm hover:bg-gray-50 disabled:bg-gray-200 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 w-full"
         aria-label="Select Document"
       >
-        <span className="truncate"> {/* Add truncate to prevent ugly text wrapping */}
+        <span className="w-256 truncate"> {/* Add truncate to prevent ugly text wrapping */}
             <Select.Value placeholder="Select a document to analyze..." />
         </span>
         <Select.Icon className="ml-2">

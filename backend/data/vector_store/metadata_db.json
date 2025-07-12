@@ -3,24 +3,26 @@
     "author": "European Union",
     "tags": [
       "AMO",
+      "COO",
       "GOTO",
-      "IB"
+      "IB",
+      "P&C"
     ],
     "regions": [
-      "Global"
+      "Americas"
     ],
     "heatmapData": {
       "AMO": {
-        "score": 2,
+        "score": 5,
         "level": "Low"
       },
       "COO Ops Americas": {
-        "score": 0,
-        "level": "None"
+        "score": 3,
+        "level": "Low"
       },
       "COO Ops S&I": {
-        "score": 0,
-        "level": "None"
+        "score": 5,
+        "level": "Low"
       },
       "GOTO Operations & COO": {
         "score": 17,
@@ -31,8 +33,8 @@
         "level": "Low"
       },
       "P&C Operations": {
-        "score": 0,
-        "level": "None"
+        "score": 2,
+        "level": "Low"
       },
       "Treasury": {
         "score": 0,
@@ -40,19 +42,23 @@
       }
     },
     "impactedLifecycles": [
+      "Client Reporting",
       "Data Management Office",
       "Market Data Management",
       "Transaction Reporting"
-    ]
+    ],
+    "publication_date": "2022-08-12"
   },
   "2107316 - EBF-Position-on-Proposal-for-Instant-Payments-Regulation-1.pdf": {
     "author": "European Banking Federation",
     "tags": [
       "COO",
+      "IB",
       "P&C"
     ],
     "regions": [
-      "Global"
+      "Americas",
+      "EU"
     ],
     "heatmapData": {
       "AMO": {
@@ -60,109 +66,20 @@
         "level": "None"
       },
       "COO Ops Americas": {
-        "score": 0,
-        "level": "None"
-      },
-      "COO Ops S&I": {
-        "score": 4,
-        "level": "Low"
-      },
-      "GOTO Operations & COO": {
-        "score": 0,
-        "level": "None"
-      },
-      "IB Operations (BA)": {
-        "score": 0,
-        "level": "None"
-      },
-      "P&C Operations": {
-        "score": 42,
-        "level": "High"
-      },
-      "Treasury": {
-        "score": 0,
-        "level": "None"
-      }
-    },
-    "impactedLifecycles": [
-      "Payments"
-    ]
-  },
-  "bcbs189.pdf": {
-    "author": "Basel Committee on Banking Supervision",
-    "tags": [
-      "COO",
-      "IB"
-    ],
-    "regions": [
-      "Americas"
-    ],
-    "heatmapData": {
-      "AMO": {
-        "score": 0,
-        "level": "None"
-      },
-      "COO Ops Americas": {
-        "score": 1,
+        "score": 6,
         "level": "Low"
       },
       "COO Ops S&I": {
-        "score": 1,
-        "level": "Low"
-      },
-      "GOTO Operations & COO": {
-        "score": 0,
-        "level": "None"
-      },
-      "IB Operations (BA)": {
         "score": 12,
         "level": "Medium"
       },
-      "P&C Operations": {
-        "score": 0,
-        "level": "None"
-      },
-      "Treasury": {
-        "score": 0,
-        "level": "None"
-      }
-    },
-    "impactedLifecycles": [
-      "Collateral & Margin Management",
-      "Credit Services",
-      "Risk Management / Oversight"
-    ]
-  },
-  "2119174 - SFC_Position_on_Instant_Credit_Transfers_in_Euro_-_Amending_the_SEPA_Regulation_.pdf": {
-    "author": "Swiss Finance Council",
-    "tags": [
-      "COO",
-      "GOTO",
-      "P&C"
-    ],
-    "regions": [
-      "Global"
-    ],
-    "heatmapData": {
-      "AMO": {
-        "score": 0,
-        "level": "None"
-      },
-      "COO Ops Americas": {
-        "score": 0,
-        "level": "None"
-      },
-      "COO Ops S&I": {
-        "score": 4,
-        "level": "Low"
-      },
       "GOTO Operations & COO": {
-        "score": 8,
-        "level": "Low"
+        "score": 0,
+        "level": "None"
       },
       "IB Operations (BA)": {
-        "score": 0,
-        "level": "None"
+        "score": 1,
+        "level": "Low"
       },
       "P&C Operations": {
         "score": 42,
@@ -175,8 +92,112 @@
     },
     "impactedLifecycles": [
       "Payments",
+      "Client Servicing (Institutional)",
+      "Client Servicing (retail / Individual / Family Offices)",
+      "Credit Services",
+      "Risk Management"
+    ],
+    "publication_date": "2023-01-26"
+  },
+  "bcbs189.pdf": {
+    "author": "Basel Committee on Banking Supervision",
+    "tags": [
+      "AMO",
+      "COO",
+      "IB",
+      "P&C"
+    ],
+    "regions": [
+      "Americas"
+    ],
+    "heatmapData": {
+      "AMO": {
+        "score": 2,
+        "level": "Low"
+      },
+      "COO Ops Americas": {
+        "score": 1,
+        "level": "Low"
+      },
+      "COO Ops S&I": {
+        "score": 4,
+        "level": "Low"
+      },
+      "GOTO Operations & COO": {
+        "score": 0,
+        "level": "None"
+      },
+      "IB Operations (BA)": {
+        "score": 12,
+        "level": "Medium"
+      },
+      "P&C Operations": {
+        "score": 11,
+        "level": "Medium"
+      },
+      "Treasury": {
+        "score": 0,
+        "level": "None"
+      }
+    },
+    "impactedLifecycles": [
+      "Balance Sheet Substantiation",
+      "Cash Management (Treasury Services)",
+      "Collateral & Margin Management",
+      "Credit Services",
+      "Global Loans Processing",
+      "Risk Management"
+    ],
+    "publication_date": "2010-12-12"
+  },
+  "2119174 - SFC_Position_on_Instant_Credit_Transfers_in_Euro_-_Amending_the_SEPA_Regulation_.pdf": {
+    "author": "Swiss Finance Council",
+    "tags": [
+      "COO",
+      "GOTO",
+      "IB",
+      "P&C"
+    ],
+    "regions": [
+      "Americas"
+    ],
+    "heatmapData": {
+      "AMO": {
+        "score": 0,
+        "level": "None"
+      },
+      "COO Ops Americas": {
+        "score": 6,
+        "level": "Low"
+      },
+      "COO Ops S&I": {
+        "score": 12,
+        "level": "Medium"
+      },
+      "GOTO Operations & COO": {
+        "score": 8,
+        "level": "Low"
+      },
+      "IB Operations (BA)": {
+        "score": 1,
+        "level": "Low"
+      },
+      "P&C Operations": {
+        "score": 42,
+        "level": "High"
+      },
+      "Treasury": {
+        "score": 0,
+        "level": "None"
+      }
+    },
+    "impactedLifecycles": [
+      "Payments",
+      "Client Servicing (Institutional)",
+      "Client Servicing (retail / Individual / Family Offices)",
       "Transaction Screening"
-    ]
+    ],
+    "publication_date": "2023-05-12"
   },
   "The-AI-Act.pdf": {
     "author": "European Commission",
@@ -224,43 +245,43 @@
       "Data Management Office",
       "Client Servicing (Institutional)",
       "Client Servicing (retail / Individual / Family Offices)"
-    ]
+    ],
+    "publication_date": "2021-04-21"
   },
   "2164081 - Draft Implementing Technical Standards on uniform reporting under SEPA.pdf": {
     "author": "EBA",
     "tags": [
       "AMO",
       "COO",
-      "GOTO",
       "IB",
       "P&C"
     ],
     "regions": [
-      "Global"
+      "Americas"
     ],
     "heatmapData": {
       "AMO": {
-        "score": 2,
+        "score": 5,
         "level": "Low"
       },
       "COO Ops Americas": {
-        "score": 0,
-        "level": "None"
+        "score": 3,
+        "level": "Low"
       },
       "COO Ops S&I": {
-        "score": 4,
+        "score": 9,
         "level": "Low"
       },
       "GOTO Operations & COO": {
-        "score": 8,
-        "level": "Low"
+        "score": 0,
+        "level": "None"
       },
       "IB Operations (BA)": {
         "score": 7,
         "level": "Low"
       },
       "P&C Operations": {
-        "score": 42,
+        "score": 44,
         "level": "High"
       },
       "Treasury": {
@@ -271,7 +292,8 @@
     "impactedLifecycles": [
       "Payments",
       "Transaction Reporting",
-      "Transaction Screening"
-    ]
+      "Client Reporting"
+    ],
+    "publication_date": "2025-02-04"
   }
 }

@@ -15,7 +15,7 @@ from .services.ingestion import process_pdfs_incrementally, load_metadata_db, sa
 
 from .api.models import (
     AnalyzeRequest, DocumentListResponse, ChatRequest, NotifyRequest,
-    DocumentMetadata, AllMetadataResponse, AnalysisResultModel
+    DocumentMetadata, AllMetadataResponse, AnalysisResultModel, DashboardData
 )
 from .services.rag_builder import (
     analyze_document_logic, chat_with_documents_logic,
@@ -52,6 +52,38 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+DASHBOARD_DATA_FILE = "dashboard_data.json"
+
+@app.post("/api/save_dashboard")
+async def save_dashboard(data: DashboardData):
+    """Saves the dashboard data to a local JSON file."""
+    try:
+        dashboard_upload_dir = "./data/vector_store"
+        os.makedirs(dashboard_upload_dir, exist_ok=True)
+        dashboard_file_path = os.path.join(dashboard_upload_dir, DASHBOARD_DATA_FILE)        
+        with open(dashboard_file_path, "w") as f:
+            # Use .model_dump_json() for Pydantic v2+ or .json() for v1
+            f.write(data.model_dump_json(indent=4))
+        return {"message": "Dashboard data saved successfully."}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/load_dashboard")
+async def load_dashboard():
+    """Loads the dashboard data from the local JSON file if it exists."""
+    dashboard_upload_dir = "./data/vector_store"
+    os.makedirs(dashboard_upload_dir, exist_ok=True)
+    dashboard_file_path = os.path.join(dashboard_upload_dir, DASHBOARD_DATA_FILE) 
+    if not os.path.exists(dashboard_file_path):
+        raise HTTPException(status_code=404, detail="Dashboard data file not found.")
+    try:
+        with open(dashboard_file_path, "r") as f:
+            data = json.load(f)
+        return data
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 @app.get("/api/dashboard", summary="Get Dashboard Overview")
 def get_dashboard_data(start_date: str | None = None, end_date: str | None = None):

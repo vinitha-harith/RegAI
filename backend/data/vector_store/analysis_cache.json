@@ -82,5 +82,105 @@
       "Payments",
       "Transaction Screening"
     ]
+  },
+  "2090347 - The-Importance-of-Reforming-the-EU-Benchmarks-Regulation.pdf": {
+    "regulatorySummary": {
+      "purpose": "The primary purpose of reforming the EU Benchmarks Regulation (BMR) is to address fundamental flaws that have positioned the regulation as a threat rather than a protective measure for benchmark users within the EU. The reform aims to align the BMR with global standards, ensuring that it provides proportionate protection to investors, imposes appropriate compliance burdens based on the significance of benchmarks, and maintains competitive fairness without unnecessary barriers.",
+      "scope": "The scope of the proposed reforms is to narrow the mandatory compliance requirements to only systemic EU and third-country benchmarks. This shift aims to reduce the regulatory burden on less critical benchmarks, allowing for a voluntary compliance regime that encourages high standards without mandating them. The reform also seeks to enhance the visibility and accessibility of compliant benchmarks through improved registration and information dissemination processes.",
+      "relevance": "The relevance of these reforms is significant in the context of global financial markets where benchmarks play a crucial role. By ensuring that the BMR is aligned with international practices, such as those adopted in the transition from LIBOR, the EU can protect its financial markets from disruptions caused by non-compliant benchmarks while fostering a competitive environment that is conducive to innovation and growth."
+    },
+    "impactAssessment": {
+      "introduction": "The proposed reforms to the EU Benchmarks Regulation are expected to have a profound impact on various aspects of financial operations within the EU. By focusing compliance efforts on systemic benchmarks and introducing a voluntary regime for others, the reforms aim to streamline regulatory processes and reduce the burden on financial institutions.",
+      "affectedAreas": [
+        {
+          "area": null,
+          "impact": "The reform will likely reduce the compliance costs associated with managing benchmarks for liquidity and risk, allowing for more efficient capital deployment and potentially lower funding costs for the bank."
+        },
+        {
+          "area": null,
+          "impact": "Enhanced visibility and accessibility of compliant benchmarks will improve the quality and reliability of client reports, particularly in performance and risk analytics, thereby boosting client trust and satisfaction."
+        },
+        {
+          "area": null,
+          "impact": "The reforms will facilitate better risk mitigation by ensuring more reliable and compliant benchmarks are used for valuation and margin calculations, thus enhancing the stability of collateral management processes."
+        },
+        {
+          "area": null,
+          "impact": "By clarifying the benchmarks that can be used and ensuring they meet high compliance standards, the reforms will reduce operational risks associated with settlement and custody services."
+        },
+        {
+          "area": null,
+          "impact": "The use of compliant and transparent benchmarks will ensure that corporate actions related to securities indexed to these benchmarks are processed with greater accuracy and reduced risk of errors."
+        }
+      ]
+    },
+    "keyDates": [
+      {
+        "date": "8 June 2016",
+        "event": "Original EU Benchmarks Regulation enacted",
+        "regulation": "Regulation (EU) 2016/1011"
+      },
+      {
+        "date": "December 10, 2019",
+        "event": "Application of Regulation on Low Carbon Benchmarks",
+        "regulation": "Regulation (EU) 2019/2089"
+      },
+      {
+        "date": "10 February 2021",
+        "event": "Amendment of BMR regarding third-country spot FX benchmarks",
+        "regulation": "Regulation (EU) 2021/168"
+      },
+      {
+        "date": "End of 2023",
+        "event": "Scheduled end of transition period for third-country benchmarks",
+        "regulation": "BMR Transition Period"
+      },
+      {
+        "date": "End of 2025",
+        "event": "Potential further extension of the transition period for third-country benchmarks",
+        "regulation": "BMR Transition Period Extension Proposal"
+      }
+    ],
+    "heatmapData": {
+      "AMO": {
+        "score": 5,
+        "level": "Low"
+      },
+      "COO Ops Americas": {
+        "score": 3,
+        "level": "Low"
+      },
+      "COO Ops S&I": {
+        "score": 5,
+        "level": "Low"
+      },
+      "GOTO Operations & COO": {
+        "score": 17,
+        "level": "Medium"
+      },
+      "IB Operations (BA)": {
+        "score": 7,
+        "level": "Low"
+      },
+      "P&C Operations": {
+        "score": 2,
+        "level": "Low"
+      },
+      "Treasury": {
+        "score": 0,
+        "level": "None"
+      }
+    },
+    "impactedLifecycles": [
+      "Client Reporting",
+      "Data Management Office",
+      "Market Data Management",
+      "Transaction Reporting"
+    ],
+    "documentInfo": {
+      "title": "2090347 - The-Importance-of-Reforming-the-EU-Benchmarks-Regulation.pdf",
+      "author": "European Union",
+      "publication_date": "2022-08-12"
+    }
   }
 }

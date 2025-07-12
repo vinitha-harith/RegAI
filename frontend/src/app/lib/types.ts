@@ -5,6 +5,12 @@ export interface RegulatorySummary {
   relevance: string;
 }
 
+export interface DocumentInfo {
+  title: string;
+  author: string;
+  publication_date: string;
+}
+
 export interface AffectedArea {
   area: string;
   impact: string;
@@ -44,10 +50,50 @@ export interface AnalysisResult {
     keyDates: KeyDate;
     heatmapData: HeatmapData;
     impactedLifecycles: string[];
+    documentInfo: DocumentInfo;
 }
 
 export interface NotificationMessage {
   id: string;
   text: string;
   timestamp: string;
+}
+
+// Interface for the complete dashboard data structure
+export interface DocumentMeta {
+  heatmapData?: HeatmapData;
+}
+
+export interface DocumentImpact {
+  [filename: string]: DocumentMeta;
+}
+
+export interface DashboardData {
+  regionalRelevance: {
+    regions: string[];
+    active: string;
+  };
+  topCategories: string[];
+  upcomingDates: string;
+  filteredMetadata: {
+       documents: DocumentImpact[];
+  };
+  // documentImpactBreakdown: {
+  //   documents: DocumentImpact[];
+  // };
+  riskAssessment: {
+    level: string;
+    factors: string[];
+    mitigations: string[];
+  };
+  impactAnalysis: {
+    operational: string;
+    strategic: string;
+    financial: string;
+  };
+  recommendations: {
+    immediate: string[];
+    shortTerm: string[];
+    longTerm: string[];
+  };
 }

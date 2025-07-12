@@ -181,6 +181,16 @@ def analyze_document_logic(document_name: str):
     final_output['heatmapData'] = document_meta.get('heatmapData', None)
     final_output['impactedLifecycles'] = document_meta.get('impactedLifecycles', []) 
     
+    # Initialize documentInfo if it doesn't exist, then extend it
+    if 'documentInfo' not in final_output:
+        final_output['documentInfo'] = {}
+    
+    final_output['documentInfo'].update({
+        'title': document_name,
+        'author': document_meta.get('author', None),
+        'publication_date': document_meta.get('publication_date', None)
+    })
+    #print(final_output)
     return final_output
 
 # def analyze_document_logic(document_name: str):

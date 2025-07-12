@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect, useMemo } from 'react';
 import { AnalysisResult } from '@/app/lib/types';
+import { RegulatoryInfo } from '@/app/components/DocumentInfo';
 import { RegulatorySummary } from '@/app/components/RegulatorySummary';
 import { ImpactAssessment } from '@/app/components/ImpactAssessment';
 import { Timeline } from '@/app/components/Timeline';
@@ -103,6 +104,7 @@ export default function ReviewPage() {
           const data: AnalysisResult = await res.json();
           setAnalysis(data);
           setStatus('displayingNew'); // A new analysis is ready to be viewed and saved
+          //console.log(data);
       } catch (e) {
           setStatus('error');
           setErrorMessage(e instanceof Error ? e.message : 'A critical error occurred during analysis.');
@@ -208,7 +210,7 @@ export default function ReviewPage() {
                     <div className="p-4 bg-white rounded-lg shadow-sm border flex flex-wrap justify-between items-center gap-4">
                         <div>
                             {status === 'displayingCache' ? (
-                                <p className="font-semibold text-sm text-blue-800">Displaying saved analysis.</p>
+                                <p className="font-semibold text-sm text-red-800">Displaying saved analysis.</p>
                             ) : (
                                 <p className="font-semibold text-sm text-green-800">New analysis generated. Click "Save Results" to persist.</p>
                             )}
@@ -238,7 +240,7 @@ export default function ReviewPage() {
                         </button>
                     </div>
                     {/* --- End of Actions Header --- */}
-
+                  <RegulatoryInfo info={analysis.documentInfo} />
                   {analysis.heatmapData && <Heatmap data={analysis.heatmapData} />}
                   {analysis.impactedLifecycles && <ImpactedLifecyclesCard lifecycles={analysis.impactedLifecycles} />}
                   <RegulatorySummary summary={analysis.regulatorySummary} />

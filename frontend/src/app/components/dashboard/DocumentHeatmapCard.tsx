@@ -8,6 +8,8 @@ interface HeatmapData {
 }
 
 interface DocumentMeta {
+    author?: string;
+    publication_date?: string;
     heatmapData?: HeatmapData;
 }
 
@@ -80,7 +82,8 @@ export const DocumentHeatmapCard = ({ metadata }: { metadata: AllMetadata }) => 
                         {documents.map(([filename, meta]) => (
                             <tr key={filename} className="hover:bg-gray-50">
                                 <td className="p-2 border border-gray-300 font-medium text-gray-700 align-top">
-                                    <p className="w-64 truncate" title={filename}>{filename}</p>
+                                    <p className="w-200 truncate" title={filename}>{filename}</p>
+                                    <p className="w-200 truncate" title={meta.author}>({meta.author} - {meta.publication_date})</p>
                                 </td>
                                 {divisions.map(dept => {
                                     const cellData = meta.heatmapData?.[dept];

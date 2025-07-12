@@ -379,6 +379,7 @@ def process_pdfs_incrementally():
         
         new_docs.extend(docs)
         processed_log[pdf_file] = mod_time
+        metadata_db[pdf_file]['publication_date'] = publication_date_str
 
     if not new_docs:
         print("Completed with no new content to add.")
