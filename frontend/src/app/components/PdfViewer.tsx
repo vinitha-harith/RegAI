@@ -16,6 +16,7 @@ interface PdfViewerProps {
 
 export default function PdfViewer({ fileUrl }: PdfViewerProps) {
   const [isClient, setIsClient] = useState(false);
+  const [pdfReady, setPdfReady] = useState(false); // NEW: track when Document/Page are loaded
   const [numPages, setNumPages] = useState<number | null>(null);
   const [pageNumber, setPageNumber] = useState(1);
   const [scale, setScale] = useState(1.0);
@@ -47,6 +48,7 @@ export default function PdfViewer({ fileUrl }: PdfViewerProps) {
       Document = module.Document;
       Page = module.Page;
       pdfjs = module.pdfjs;
+      setPdfReady(true); // NEW: mark as ready
       console.log('React-PDF components loaded:', { Document: !!Document, Page: !!Page, pdfjs: !!pdfjs });
     }).catch(error => {
       console.error('Failed to load react-pdf components:', error);
@@ -144,7 +146,7 @@ export default function PdfViewer({ fileUrl }: PdfViewerProps) {
   );
 
   // Don't render anything until client-side
-  if (!isClient || !Document || !Page) {
+  if (!isClient || !pdfReady || !Document || !Page) {
     return (
       <div className="w-full h-full flex flex-col bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md">
         <div className="flex-grow overflow-auto p-4 flex items-center justify-center">
