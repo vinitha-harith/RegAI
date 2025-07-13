@@ -8,8 +8,9 @@ import { Timeline } from '@/app/components/Timeline';
 import { DocumentSelector } from '@/app/components/DocumentSelector';
 import { Heatmap } from '@/app/components/Heatmap';
 import { ImpactedLifecyclesCard } from '@/app/components/ImpactedLifecyclesCard';
-import { Loader2, Search, Info, Save, CheckCircle, AlertCircle, Send } from 'lucide-react';
+import { Loader2, Search, Info, Save, CheckCircle, AlertCircle, Send, RefreshCw, Mic } from 'lucide-react';
 import PdfViewer from "@/app/components/PdfViewer"; 
+import { toast } from "react-hot-toast";
 
 type PageStatus = 'idle' | 'loadingCache' | 'loadingAnalysis' | 'displayingCache' | 'displayingNew' | 'error';
 
@@ -20,10 +21,11 @@ export default function ReviewPage() {
   const [status, setStatus] = useState<PageStatus>('idle');
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved'>('idle');
-
   const [notificationStatus, setNotificationStatus] = useState<'idle' | 'sending' | 'sent'>('idle');
-
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+
+  const [isGeneratingPodcast, setIsGeneratingPodcast] = useState(false);
+  const [audioUrl, setAudioUrl] = useState<string | null>(null);
 
   const impactedDivisions = useMemo(() => {
     if (!analysis?.heatmapData) return [];
@@ -56,6 +58,7 @@ export default function ReviewPage() {
           setAnalysis(null);
           setStatus('idle'); // When deselected, go back to idle
           setPdfUrl(null);
+          setAudioUrl(null);
           return;
       }
 
@@ -65,6 +68,7 @@ export default function ReviewPage() {
           setSaveStatus('idle'); // Reset save status
           setAnalysis(null); // Clear previous analysis
           setPdfUrl(null);
+          setAudioUrl(null);
 
           try {
               const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/cache/${selectedDocument}`);
@@ -81,14 +85,15 @@ export default function ReviewPage() {
               setAnalysis(data);
               setStatus('displayingCache'); // We have cached data to show
 
-            // MODIFICATION: Set the PDF URL after data is loaded
-            if (data) {
-                setPdfUrl(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/documents/${selectedDocument}`);
-            } else {
-                setPdfUrl(null); // Ensure no old PDF is shown if data load fails
-            }
+              // Always set the PDF URL when a document is selected
+              setPdfUrl(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/documents/${selectedDocument}`);
 
-          } catch (e) {
+              const audio_res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/audio/${selectedDocument}.mp3`);
+              if (audio_res.ok) {
+                setAudioUrl(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/audio/${selectedDocument}.mp3`);
+              }
+
+            } catch (e) {
               setStatus('error');
               setErrorMessage(e instanceof Error ? e.message : 'An error occurred while checking the cache.');
           }
@@ -104,6 +109,7 @@ export default function ReviewPage() {
       setSaveStatus('idle');
       setAnalysis(null);
       setPdfUrl(null);
+      setAudioUrl(null); // Reset audio when new data is loaded
 
       try {
           const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/analyze`, {
@@ -119,13 +125,15 @@ export default function ReviewPage() {
           setAnalysis(data);
           setStatus('displayingNew'); // A new analysis is ready to be viewed and saved
           //console.log(data);
+          setPdfUrl(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/documents/${selectedDocument}`);
 
           // MODIFICATION: Set the PDF URL after data is loaded
-          if (data) {
-            setPdfUrl(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/documents/${selectedDocument}`);
-          } else {
-            setPdfUrl(null); // Ensure no old PDF is shown if data load fails
-          }
+        //   if (data) {
+        //     setPdfUrl(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/documents/${selectedDocument}`);
+        //   } else {
+        //     setPdfUrl(null); // Ensure no old PDF is shown if data load fails
+        //   }
+          setAudioUrl(null); // Reset audio when new data is loaded
       } catch (e) {
           setStatus('error');
           setErrorMessage(e instanceof Error ? e.message : 'A critical error occurred during analysis.');
@@ -172,8 +180,46 @@ export default function ReviewPage() {
     }
 };
 
-  const isLoading = status === 'loadingCache' || status === 'loadingAnalysis';
+  // UI: This function is triggered by the "Generate Podcast" button.
+  const handleGeneratePodcast = async () => {
+    if (!analysis) {
+      toast.error("Cannot generate podcast without a source document.");
+      return;
+    }
+    setIsGeneratingPodcast(true);
+    setAudioUrl(null);
+    const toastId = toast.loading("Generating podcast summary... This may take a moment.");
 
+    try {
+      // NOTE: Here we pass the `file_name` in the request body,
+      // which the backend's Pydantic model receives.
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/generate_podcast`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ file_name: selectedDocument }),
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || "Failed to generate podcast.");
+      }
+
+      const result = await response.json();
+      setAudioUrl(`${process.env.NEXT_PUBLIC_API_BASE_URL}${result.audio_url}`);
+      toast.success("Podcast generated successfully!", { id: toastId });
+
+    } catch (error: any) {
+      toast.error(error.message, { id: toastId });
+    } finally {
+      setIsGeneratingPodcast(false);
+    }
+  };
+
+
+
+  const isLoading = status === 'loadingCache' || status === 'loadingAnalysis';
+  console.log(status);
+  console.log(pdfUrl);
   return (
       <div className="max-w-7xl mx-auto space-y-8">
           <header className="p-4 bg-white rounded-lg shadow-sm border border-gray-200">
@@ -199,6 +245,17 @@ export default function ReviewPage() {
                   <Search className="mr-2 h-5 w-5" />
                   {status === 'displayingCache' ? 'Re-Analyze' : 'Analyze'}
               </button>
+
+              {/* This is the button to create the podcast. */}
+                <button 
+                    onClick={handleGeneratePodcast} 
+                    disabled={isGeneratingPodcast || !analysis} 
+                    className="flex items-center justify-center px-6 h-11 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 disabled:bg-purple-300 disabled:cursor-not-allowed"
+                >
+                    {isGeneratingPodcast ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : <Mic className="mr-2 h-5 w-5" />}
+                    Podcast
+                </button>  
+
               {status === 'displayingNew' && (
                   <button 
                       onClick={handleSaveClick}
@@ -225,7 +282,7 @@ export default function ReviewPage() {
               <div className="p-4 text-red-800 bg-red-100 rounded-md flex items-center gap-3"><AlertCircle /> {errorMessage}</div>
           )}
 
-          {analysis && (status === 'displayingCache' || status === 'displayingNew') && (
+          {analysis && (status === 'displayingCache' || status === 'displayingNew' || pdfUrl) && (
             <>
                 {/* Full-width components before RegulatorySummary */}
                 <div className="mt-8 space-y-8">
@@ -262,6 +319,17 @@ export default function ReviewPage() {
                             {notificationStatus === 'sent' && 'Sent!'}
                         </button>
                     </div>
+
+                    {/* This audio player appears once the podcast is generated. */}
+                    {audioUrl && (
+                        <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+                        <h3 className="text-lg font-semibold mb-2">Generated Podcast Summary</h3>
+                        <audio controls className="w-full" src={audioUrl}>
+                            Your browser does not support the audio element.
+                        </audio>
+                        </div>
+                    )}
+
                     {/* --- End of Actions Header --- */}
                     <RegulatoryInfo info={analysis.documentInfo} />
                     {analysis.heatmapData && <Heatmap data={analysis.heatmapData} />}
@@ -281,7 +349,7 @@ export default function ReviewPage() {
                     <div className="h-full overflow-hidden">
                         {pdfUrl ? (
                             <div className="h-full overflow-y-auto">
-                                <PdfViewer fileUrl={pdfUrl} />
+                                <PdfViewer key={pdfUrl} fileUrl={pdfUrl} />
                             </div>
                         ) : (
                             <div className="flex items-center justify-center h-full bg-gray-100 rounded-lg border-2 border-dashed">

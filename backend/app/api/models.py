@@ -112,3 +112,6 @@ class DashboardData(BaseModel):
     topCategories: List[str]
     sourceDocuments: List[str]
     filteredMetadata: DashboardMetadataResponse
+
+class PodcastRequest(BaseModel):
+    file_name: str

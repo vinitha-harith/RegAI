@@ -16,7 +16,8 @@ from fastapi.responses import FileResponse
 
 from .api.models import (
     AnalyzeRequest, DocumentListResponse, ChatRequest, NotifyRequest,
-    DocumentMetadata, AllMetadataResponse, AnalysisResultModel, DashboardData
+    DocumentMetadata, AllMetadataResponse, AnalysisResultModel, DashboardData,
+    PodcastRequest
 )
 from .services.rag_builder import (
     analyze_document_logic, chat_with_documents_logic,
@@ -27,7 +28,8 @@ from .services.dashboard_service import generate_dashboard_logic
 from .services.ConnectionManager import manager
 # from .api.models import AnalyzeRequest, DocumentListResponse, ChatRequest, NotifyRequest, AnalysisResultModel 
 from fastapi import WebSocket, WebSocketDisconnect
-
+import fitz
+from openai import OpenAI
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -39,6 +41,16 @@ async def lifespan(app: FastAPI):
         print("Vector store found. Application is ready.")
     yield
     print("--- Application shutting down ---")
+
+### Podcast
+try:
+    if not os.getenv("OPENAI_API_KEY"):
+        raise ValueError("OPENAI_API_KEY environment variable not set.")
+    client = OpenAI()
+except ValueError as e:
+    print(f"FATAL: Could not initialize OpenAI client. Error: {e}")
+    client = None
+
 
 app = FastAPI(
     title="Financial Regulatory Analysis API",
@@ -56,6 +68,9 @@ app.add_middleware(
 
 DASHBOARD_DATA_FILE = "dashboard_data.json"
 DOCUMENTS_DIR = "./data/pdfs_to_process"
+AUDIO_DIR = "./data/generated_audio"
+os.makedirs(AUDIO_DIR, exist_ok=True)
+
 
 @app.post("/api/save_dashboard")
 async def save_dashboard(data: DashboardData):
@@ -189,6 +204,81 @@ async def get_document(file_name: str):
         raise HTTPException(status_code=404, detail="File not found.")
         
     return FileResponse(file_path, media_type='application/pdf', filename=file_name)
+
+
+# --- The /generate_podcast endpoint using the standard OpenAI API ---
+@app.post("/api/generate_podcast")
+async def generate_podcast(request: PodcastRequest): # Accepts file_name via request body
+    if not client:
+        raise HTTPException(status_code=503, detail="OpenAI service is not configured on the server.")
+
+    # The file_name from the UI is used here
+    pdf_path = os.path.join(DOCUMENTS_DIR, request.file_name)
+    if not os.path.exists(pdf_path):
+        raise HTTPException(status_code=404, detail="Source PDF not found.")
+
+    try:
+        # 1. Extract Text from PDF (No changes here)
+        text_content = ""
+        with fitz.open(pdf_path) as doc:
+            for page in doc:
+                text_content += page.get_text()
+        
+        if not text_content.strip():
+            raise HTTPException(status_code=400, detail="Could not extract text from PDF.")
+
+        # 2. Generate Podcast Script with OpenAI (using a standard model name)
+        system_prompt = """
+        You are a podcast host specializing in breaking down dense regulatory and technical documents. 
+        Your task is to transform the following document text into a short, engaging podcast script (under 5 minutes).
+        - Explain the core purpose and key takeaways of the document in simple terms. Specifically mention ALL the important dates, e.g., milestone, deadline dates and the required action items.
+        - Use a conversational, clear, and professional tone.
+        - Structure the output as a simple monologue. Do not use host labels like 'Host:'.
+        - End with a concluding thought or summary.
+        """
+        
+        response = client.chat.completions.create(
+            model="gpt-4o",  # Use a standard, powerful model like gpt-4o or gpt-4-turbo
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": text_content[:12000]} # Limit token usage
+            ],
+            temperature=0.2,
+        )
+        script = response.choices[0].message.content
+
+        # 3. Convert Script to Speech (TTS)
+        audio_file_name = f"{os.path.splitext(request.file_name)[0]}.mp3"
+        audio_output_path = os.path.join(AUDIO_DIR, audio_file_name)
+        
+        with client.audio.speech.with_streaming_response.create(
+            model="tts-1",
+            voice="nova",
+            input=script
+        ) as tts_response:
+            # This now correctly streams the audio to the file.
+            tts_response.stream_to_file(audio_output_path)
+
+        # 4. Return the URL to the audio file 
+        return {"audio_url": f"/api/audio/{audio_file_name}"}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
+
+
+# --- MODIFICATION: Add new endpoint to serve the generated audio ---
+@app.get("/api/audio/{file_name}")
+async def get_audio(file_name: str):
+    """Serves a static audio file from the generated_audio directory."""
+    if ".." in file_name or file_name.startswith("/"):
+        raise HTTPException(status_code=400, detail="Invalid file name.")
+        
+    file_path = os.path.join(AUDIO_DIR, file_name.replace('.pdf', ''))
+    print(file_path)
+    if not os.path.exists(file_path):
+        raise HTTPException(status_code=404, detail="Audio file not found.")
+
+    return FileResponse(file_path, media_type='audio/mpeg', filename=file_name)
 
 
 # --- ADD THE NEW CHAT ENDPOINT ---

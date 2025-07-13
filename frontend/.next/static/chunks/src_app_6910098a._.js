@@ -1125,9 +1125,11 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$zoom$2d$in$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ZoomIn$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/zoom-in.js [app-client] (ecmascript) <export default as ZoomIn>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$zoom$2d$out$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ZoomOut$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/zoom-out.js [app-client] (ecmascript) <export default as ZoomOut>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$rotate$2d$ccw$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__RotateCcw$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/rotate-ccw.js [app-client] (ecmascript) <export default as RotateCcw>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$alert$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__AlertCircle$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/circle-alert.js [app-client] (ecmascript) <export default as AlertCircle>"); // Added missing import
 ;
 var _s = __turbopack_context__.k.signature();
 "use client";
+;
 ;
 ;
 ;
@@ -1142,19 +1144,98 @@ function PdfViewer({ fileUrl }) {
     const [isClient, setIsClient] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const [scale, setScale] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(1.0);
     const [rotation, setRotation] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(0);
+    const [isLoading, setIsLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [loadError, setLoadError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
+    const [useIframeFallback, setUseIframeFallback] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [pdfBlobUrl, setPdfBlobUrl] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
+    console.log('PdfViewer render:', {
+        fileUrl,
+        isClient,
+        Document: !Document,
+        Page: !Page,
+        isLoading,
+        loadError,
+        useIframeFallback
+    });
+    // Debug when Document component should render
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "PdfViewer.useEffect": ()=>{
+            if (fileUrl && isClient && Document && Page && !useIframeFallback) {
+                console.log('Document component should render with:', {
+                    fileUrl,
+                    Document: !!Document,
+                    Page: !!Page
+                });
+            }
+        }
+    }["PdfViewer.useEffect"], [
+        fileUrl,
+        isClient,
+        Document,
+        Page,
+        useIframeFallback
+    ]);
+    // Cleanup blob URL when component unmounts or fileUrl changes
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "PdfViewer.useEffect": ()=>{
+            return ({
+                "PdfViewer.useEffect": ()=>{
+                    if (pdfBlobUrl) {
+                        console.log('Cleaning up blob URL:', pdfBlobUrl);
+                        URL.revokeObjectURL(pdfBlobUrl);
+                    }
+                }
+            })["PdfViewer.useEffect"];
+        }
+    }["PdfViewer.useEffect"], [
+        pdfBlobUrl
+    ]);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "PdfViewer.useEffect": ()=>{
             setIsClient(true);
+            // Set up the worker immediately
+            if ("TURBOPACK compile-time truthy", 1) {
+                // Import and set up PDF.js worker immediately
+                __turbopack_context__.r("[project]/node_modules/react-pdf/dist/index.js [app-client] (ecmascript, async loader)")(__turbopack_context__.i).then({
+                    "PdfViewer.useEffect": (module)=>{
+                        const { pdfjs } = module;
+                        // Use the correct worker path that matches react-pdf version
+                        pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js';
+                        console.log('PDF.js worker set to:', pdfjs.GlobalWorkerOptions.workerSrc);
+                        console.log('PDF.js version:', pdfjs.version);
+                        // Test worker loading
+                        try {
+                            const worker = new Worker(pdfjs.GlobalWorkerOptions.workerSrc);
+                            worker.terminate(); // Clean up test worker
+                            console.log('PDF.js worker loaded successfully');
+                        } catch (error) {
+                            console.error('PDF.js worker loading failed:', error);
+                            setLoadError('Failed to load PDF worker');
+                        }
+                    }
+                }["PdfViewer.useEffect"]).catch({
+                    "PdfViewer.useEffect": (error)=>{
+                        console.error('Failed to import react-pdf:', error);
+                        setLoadError('Failed to load PDF viewer components');
+                    }
+                }["PdfViewer.useEffect"]);
+            }
             // Dynamically import react-pdf components
             __turbopack_context__.r("[project]/node_modules/react-pdf/dist/index.js [app-client] (ecmascript, async loader)")(__turbopack_context__.i).then({
                 "PdfViewer.useEffect": (module)=>{
                     Document = module.Document;
                     Page = module.Page;
                     pdfjs = module.pdfjs;
-                    // Set up the worker with the correct version
-                    if ("TURBOPACK compile-time truthy", 1) {
-                        pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js';
-                    }
+                    console.log('React-PDF components loaded:', {
+                        Document: !!Document,
+                        Page: !!Page,
+                        pdfjs: !!pdfjs
+                    });
+                }
+            }["PdfViewer.useEffect"]).catch({
+                "PdfViewer.useEffect": (error)=>{
+                    console.error('Failed to load react-pdf components:', error);
+                    setLoadError('Failed to load PDF viewer components');
                 }
             }["PdfViewer.useEffect"]);
             // Import CSS for annotations and text layer
@@ -1170,12 +1251,124 @@ function PdfViewer({ fileUrl }) {
             }
         }
     }["PdfViewer.useEffect"], []);
+    // Reset state when fileUrl changes
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "PdfViewer.useEffect": ()=>{
+            if (fileUrl) {
+                console.log('FileUrl changed, testing accessibility:', fileUrl);
+                setPageNumber(1);
+                setScale(1.0);
+                setRotation(0);
+                setNumPages(null);
+                setIsLoading(true);
+                setLoadError(null);
+                setUseIframeFallback(false);
+                setPdfBlobUrl(null); // Clear previous blob URL
+                // Test if the PDF URL is accessible with more detailed logging
+                console.log('Testing PDF accessibility...');
+                fetch(fileUrl, {
+                    method: 'GET'
+                }).then({
+                    "PdfViewer.useEffect": (response)=>{
+                        console.log('PDF URL accessibility test:', {
+                            status: response.status,
+                            ok: response.ok,
+                            contentType: response.headers.get('content-type'),
+                            contentLength: response.headers.get('content-length'),
+                            url: fileUrl
+                        });
+                        if (!response.ok) {
+                            throw new Error(`PDF not accessible: ${response.status} ${response.statusText}`);
+                        }
+                        // If accessible, log success and continue
+                        console.log('PDF URL is accessible, proceeding with loading...');
+                        // Test if we can actually read the PDF data
+                        return response.blob();
+                    }
+                }["PdfViewer.useEffect"]).then({
+                    "PdfViewer.useEffect": (blob)=>{
+                        console.log('PDF blob received:', {
+                            size: blob.size,
+                            type: blob.type
+                        });
+                        if (blob.size === 0) {
+                            throw new Error('PDF file is empty');
+                        }
+                        console.log('PDF blob is valid, creating blob URL...');
+                        // Create a blob URL for the PDF
+                        const blobUrl = URL.createObjectURL(blob);
+                        console.log('Created blob URL:', blobUrl);
+                        setPdfBlobUrl(blobUrl);
+                    }
+                }["PdfViewer.useEffect"]).catch({
+                    "PdfViewer.useEffect": (error)=>{
+                        console.error('PDF URL accessibility error:', error);
+                        setLoadError(`Failed to access PDF: ${error.message}`);
+                        setIsLoading(false);
+                    }
+                }["PdfViewer.useEffect"]);
+                // Add a timeout to detect if PDF loading is hanging (reduced from 10s to 5s)
+                const timeoutId = setTimeout({
+                    "PdfViewer.useEffect.timeoutId": ()=>{
+                        if (isLoading) {
+                            console.warn('PDF loading timeout - still loading after 5 seconds');
+                            console.warn('Current state:', {
+                                isLoading,
+                                numPages,
+                                loadError
+                            });
+                            setLoadError('PDF loading timed out. Please try again.');
+                            setIsLoading(false);
+                            // Automatically switch to iframe fallback after timeout
+                            if (!useIframeFallback) {
+                                console.log('Automatically switching to iframe fallback due to timeout');
+                                setUseIframeFallback(true);
+                            }
+                        }
+                    }
+                }["PdfViewer.useEffect.timeoutId"], 5000);
+                return ({
+                    "PdfViewer.useEffect": ()=>{
+                        console.log('Cleaning up PDF loading timeout');
+                        clearTimeout(timeoutId);
+                    }
+                })["PdfViewer.useEffect"];
+            } else {
+                console.log('No fileUrl provided, resetting state');
+                setIsLoading(false);
+                setLoadError(null);
+            }
+        }
+    }["PdfViewer.useEffect"], [
+        fileUrl
+    ]);
     function onDocumentLoadSuccess({ numPages }) {
+        console.log('PDF loaded successfully:', {
+            numPages,
+            fileUrl
+        });
         setNumPages(numPages);
         setPageNumber(1); // Reset to first page on new document load
+        setIsLoading(false);
+        setLoadError(null);
     }
     function onDocumentLoadError(error) {
+        console.error('PDF load error:', error);
+        setIsLoading(false);
+        setLoadError(`Error loading PDF: ${error.message}`);
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].error(`Error while loading PDF: ${error.message}`);
+        // After multiple failures, try iframe fallback
+        if (!useIframeFallback) {
+            console.log('Switching to iframe fallback...');
+            setUseIframeFallback(true);
+        }
+    }
+    function onDocumentLoadProgress({ loaded, total }) {
+        console.log('PDF loading progress:', {
+            loaded,
+            total,
+            percentage: total ? loaded / total * 100 : 0
+        });
     }
     function goToPrevPage() {
         setPageNumber((prevPageNumber)=>Math.max(prevPageNumber - 1, 1));
@@ -1197,13 +1390,13 @@ function PdfViewer({ fileUrl }) {
         setRotation((prevRotation)=>(prevRotation + 90) % 360);
     }
     const loadingSpinner = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "flex flex-col items-center justify-center h-full text-gray-500",
+        className: "flex flex-col items-center justify-center h-full text-red-500",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__["Loader2"], {
                 className: "h-10 w-10 animate-spin"
             }, void 0, false, {
                 fileName: "[project]/src/app/components/PdfViewer.tsx",
-                lineNumber: 83,
+                lineNumber: 227,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1211,13 +1404,122 @@ function PdfViewer({ fileUrl }) {
                 children: "Loading Document..."
             }, void 0, false, {
                 fileName: "[project]/src/app/components/PdfViewer.tsx",
-                lineNumber: 84,
+                lineNumber: 228,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                className: "text-sm text-gray-400 mt-2",
+                children: fileUrl
+            }, void 0, false, {
+                fileName: "[project]/src/app/components/PdfViewer.tsx",
+                lineNumber: 229,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                className: "text-xs text-gray-300 mt-1",
+                children: "This may take a few moments for large files"
+            }, void 0, false, {
+                fileName: "[project]/src/app/components/PdfViewer.tsx",
+                lineNumber: 230,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/components/PdfViewer.tsx",
-        lineNumber: 82,
+        lineNumber: 226,
+        columnNumber: 5
+    }, this);
+    const errorDisplay = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: "flex flex-col items-center justify-center h-full text-red-500",
+        children: [
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$alert$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__AlertCircle$3e$__["AlertCircle"], {
+                className: "h-10 w-10"
+            }, void 0, false, {
+                fileName: "[project]/src/app/components/PdfViewer.tsx",
+                lineNumber: 236,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                className: "mt-4 text-center",
+                children: "Failed to load PDF"
+            }, void 0, false, {
+                fileName: "[project]/src/app/components/PdfViewer.tsx",
+                lineNumber: 237,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                className: "text-sm text-gray-400 mt-2 text-center",
+                children: loadError
+            }, void 0, false, {
+                fileName: "[project]/src/app/components/PdfViewer.tsx",
+                lineNumber: 238,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "flex gap-2 mt-4",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                        onClick: ()=>{
+                            setIsLoading(true);
+                            setLoadError(null);
+                        },
+                        className: "px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600",
+                        children: "Retry"
+                    }, void 0, false, {
+                        fileName: "[project]/src/app/components/PdfViewer.tsx",
+                        lineNumber: 240,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                        onClick: ()=>{
+                            // Open PDF in new tab as fallback
+                            window.open(fileUrl, '_blank');
+                        },
+                        className: "px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600",
+                        children: "Open in New Tab"
+                    }, void 0, false, {
+                        fileName: "[project]/src/app/components/PdfViewer.tsx",
+                        lineNumber: 249,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                        onClick: ()=>{
+                            setUseIframeFallback(true);
+                            setLoadError(null);
+                        },
+                        className: "px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600",
+                        children: "Use Simple Viewer"
+                    }, void 0, false, {
+                        fileName: "[project]/src/app/components/PdfViewer.tsx",
+                        lineNumber: 258,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/src/app/components/PdfViewer.tsx",
+                lineNumber: 239,
+                columnNumber: 7
+            }, this)
+        ]
+    }, void 0, true, {
+        fileName: "[project]/src/app/components/PdfViewer.tsx",
+        lineNumber: 235,
+        columnNumber: 5
+    }, this);
+    const iframeFallback = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: "w-full h-full",
+        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("iframe", {
+            src: pdfBlobUrl || fileUrl,
+            className: "w-full h-full border-0",
+            title: "PDF Document"
+        }, void 0, false, {
+            fileName: "[project]/src/app/components/PdfViewer.tsx",
+            lineNumber: 273,
+            columnNumber: 7
+        }, this)
+    }, void 0, false, {
+        fileName: "[project]/src/app/components/PdfViewer.tsx",
+        lineNumber: 272,
         columnNumber: 5
     }, this);
     // Don't render anything until client-side
@@ -1233,7 +1535,7 @@ function PdfViewer({ fileUrl }) {
                             className: "h-10 w-10 animate-spin"
                         }, void 0, false, {
                             fileName: "[project]/src/app/components/PdfViewer.tsx",
-                            lineNumber: 94,
+                            lineNumber: 287,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1241,23 +1543,23 @@ function PdfViewer({ fileUrl }) {
                             children: "Loading PDF Viewer..."
                         }, void 0, false, {
                             fileName: "[project]/src/app/components/PdfViewer.tsx",
-                            lineNumber: 95,
+                            lineNumber: 288,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/components/PdfViewer.tsx",
-                    lineNumber: 93,
+                    lineNumber: 286,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/components/PdfViewer.tsx",
-                lineNumber: 92,
+                lineNumber: 285,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/src/app/components/PdfViewer.tsx",
-            lineNumber: 91,
+            lineNumber: 284,
             columnNumber: 7
         }, this);
     }
@@ -1266,32 +1568,48 @@ function PdfViewer({ fileUrl }) {
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "flex-grow overflow-auto p-4",
-                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Document, {
-                    file: fileUrl,
+                children: loadError ? errorDisplay : useIframeFallback ? iframeFallback : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Document, {
+                    file: pdfBlobUrl || fileUrl,
                     onLoadSuccess: onDocumentLoadSuccess,
                     onLoadError: onDocumentLoadError,
+                    onLoadProgress: onDocumentLoadProgress,
                     loading: loadingSpinner,
                     className: "flex justify-center",
+                    error: errorDisplay,
+                    onSourceSuccess: ()=>{
+                        console.log('Document source loaded successfully');
+                    },
+                    onSourceError: (error)=>{
+                        console.error('Document source error:', error);
+                        setLoadError(`Source error: ${error.message}`);
+                    },
                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Page, {
                         pageNumber: pageNumber,
                         scale: scale,
-                        rotate: rotation
+                        rotate: rotation,
+                        onLoadSuccess: ()=>{
+                            console.log('PDF page loaded successfully');
+                        },
+                        onLoadError: (error)=>{
+                            console.error('PDF page load error:', error);
+                            setLoadError(`Page load error: ${error.message}`);
+                        }
                     }, void 0, false, {
                         fileName: "[project]/src/app/components/PdfViewer.tsx",
-                        lineNumber: 113,
-                        columnNumber: 11
+                        lineNumber: 321,
+                        columnNumber: 13
                     }, this)
-                }, void 0, false, {
+                }, `${fileUrl}-${Date.now()}`, false, {
                     fileName: "[project]/src/app/components/PdfViewer.tsx",
-                    lineNumber: 106,
-                    columnNumber: 9
+                    lineNumber: 304,
+                    columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/components/PdfViewer.tsx",
-                lineNumber: 105,
+                lineNumber: 298,
                 columnNumber: 7
             }, this),
-            numPages && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            numPages && !loadError && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1306,12 +1624,12 @@ function PdfViewer({ fileUrl }) {
                                     className: "h-5 w-5"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/components/PdfViewer.tsx",
-                                    lineNumber: 132,
+                                    lineNumber: 348,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/components/PdfViewer.tsx",
-                                lineNumber: 126,
+                                lineNumber: 342,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1324,7 +1642,7 @@ function PdfViewer({ fileUrl }) {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/components/PdfViewer.tsx",
-                                lineNumber: 135,
+                                lineNumber: 351,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1336,18 +1654,18 @@ function PdfViewer({ fileUrl }) {
                                     className: "h-5 w-5"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/components/PdfViewer.tsx",
-                                    lineNumber: 145,
+                                    lineNumber: 361,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/components/PdfViewer.tsx",
-                                lineNumber: 139,
+                                lineNumber: 355,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/components/PdfViewer.tsx",
-                        lineNumber: 125,
+                        lineNumber: 341,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1362,12 +1680,12 @@ function PdfViewer({ fileUrl }) {
                                     className: "h-5 w-5"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/components/PdfViewer.tsx",
-                                    lineNumber: 157,
+                                    lineNumber: 373,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/components/PdfViewer.tsx",
-                                lineNumber: 151,
+                                lineNumber: 367,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1378,7 +1696,7 @@ function PdfViewer({ fileUrl }) {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/components/PdfViewer.tsx",
-                                lineNumber: 160,
+                                lineNumber: 376,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1390,12 +1708,12 @@ function PdfViewer({ fileUrl }) {
                                     className: "h-5 w-5"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/components/PdfViewer.tsx",
-                                    lineNumber: 170,
+                                    lineNumber: 386,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/components/PdfViewer.tsx",
-                                lineNumber: 164,
+                                lineNumber: 380,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1406,12 +1724,12 @@ function PdfViewer({ fileUrl }) {
                                     className: "h-5 w-5"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/components/PdfViewer.tsx",
-                                    lineNumber: 178,
+                                    lineNumber: 394,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/components/PdfViewer.tsx",
-                                lineNumber: 173,
+                                lineNumber: 389,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1421,29 +1739,29 @@ function PdfViewer({ fileUrl }) {
                                 children: "Reset"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/components/PdfViewer.tsx",
-                                lineNumber: 181,
+                                lineNumber: 397,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/components/PdfViewer.tsx",
-                        lineNumber: 150,
+                        lineNumber: 366,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/components/PdfViewer.tsx",
-                lineNumber: 123,
+                lineNumber: 339,
                 columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/components/PdfViewer.tsx",
-        lineNumber: 103,
+        lineNumber: 296,
         columnNumber: 5
     }, this);
 }
-_s(PdfViewer, "8gjEivwU3cXsy79EpC+rbBNcYQc=");
+_s(PdfViewer, "AyaMbljwa2G9dyP6UaxheRTHDKs=");
 _c = PdfViewer;
 var _c;
 __turbopack_context__.k.register(_c, "PdfViewer");
@@ -1476,10 +1794,13 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2d$big$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/circle-check-big.js [app-client] (ecmascript) <export default as CheckCircle>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$alert$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__AlertCircle$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/circle-alert.js [app-client] (ecmascript) <export default as AlertCircle>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$send$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Send$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/send.js [app-client] (ecmascript) <export default as Send>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$mic$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Mic$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/mic.js [app-client] (ecmascript) <export default as Mic>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$PdfViewer$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/app/components/PdfViewer.tsx [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react-hot-toast/dist/index.mjs [app-client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature();
 'use client';
+;
 ;
 ;
 ;
@@ -1500,6 +1821,8 @@ function ReviewPage() {
     const [saveStatus, setSaveStatus] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])('idle');
     const [notificationStatus, setNotificationStatus] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])('idle');
     const [pdfUrl, setPdfUrl] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
+    const [isGeneratingPodcast, setIsGeneratingPodcast] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [audioUrl, setAudioUrl] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const impactedDivisions = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMemo"])({
         "ReviewPage.useMemo[impactedDivisions]": ()=>{
             if (!analysis?.heatmapData) return [];
@@ -1538,6 +1861,7 @@ function ReviewPage() {
                 setAnalysis(null);
                 setStatus('idle'); // When deselected, go back to idle
                 setPdfUrl(null);
+                setAudioUrl(null);
                 return;
             }
             const fetchCachedData = {
@@ -1547,6 +1871,7 @@ function ReviewPage() {
                     setSaveStatus('idle'); // Reset save status
                     setAnalysis(null); // Clear previous analysis
                     setPdfUrl(null);
+                    setAudioUrl(null);
                     try {
                         const res = await fetch(`${("TURBOPACK compile-time value", "http://127.0.0.1:8000")}/api/cache/${selectedDocument}`);
                         if (res.status === 404) {
@@ -1561,11 +1886,11 @@ function ReviewPage() {
                         const data = await res.json();
                         setAnalysis(data);
                         setStatus('displayingCache'); // We have cached data to show
-                        // MODIFICATION: Set the PDF URL after data is loaded
-                        if (data) {
-                            setPdfUrl(`${("TURBOPACK compile-time value", "http://127.0.0.1:8000")}/api/documents/${selectedDocument}`);
-                        } else {
-                            setPdfUrl(null); // Ensure no old PDF is shown if data load fails
+                        // Always set the PDF URL when a document is selected
+                        setPdfUrl(`${("TURBOPACK compile-time value", "http://127.0.0.1:8000")}/api/documents/${selectedDocument}`);
+                        const audio_res = await fetch(`${("TURBOPACK compile-time value", "http://127.0.0.1:8000")}/api/audio/${selectedDocument}.mp3`);
+                        if (audio_res.ok) {
+                            setAudioUrl(`${("TURBOPACK compile-time value", "http://127.0.0.1:8000")}/api/audio/${selectedDocument}.mp3`);
                         }
                     } catch (e) {
                         setStatus('error');
@@ -1585,6 +1910,7 @@ function ReviewPage() {
         setSaveStatus('idle');
         setAnalysis(null);
         setPdfUrl(null);
+        setAudioUrl(null); // Reset audio when new data is loaded
         try {
             const res = await fetch(`${("TURBOPACK compile-time value", "http://127.0.0.1:8000")}/api/analyze`, {
                 method: 'POST',
@@ -1603,12 +1929,14 @@ function ReviewPage() {
             setAnalysis(data);
             setStatus('displayingNew'); // A new analysis is ready to be viewed and saved
             //console.log(data);
+            setPdfUrl(`${("TURBOPACK compile-time value", "http://127.0.0.1:8000")}/api/documents/${selectedDocument}`);
             // MODIFICATION: Set the PDF URL after data is loaded
-            if (data) {
-                setPdfUrl(`${("TURBOPACK compile-time value", "http://127.0.0.1:8000")}/api/documents/${selectedDocument}`);
-            } else {
-                setPdfUrl(null); // Ensure no old PDF is shown if data load fails
-            }
+            //   if (data) {
+            //     setPdfUrl(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/documents/${selectedDocument}`);
+            //   } else {
+            //     setPdfUrl(null); // Ensure no old PDF is shown if data load fails
+            //   }
+            setAudioUrl(null); // Reset audio when new data is loaded
         } catch (e) {
             setStatus('error');
             setErrorMessage(e instanceof Error ? e.message : 'A critical error occurred during analysis.');
@@ -1654,7 +1982,47 @@ function ReviewPage() {
             setNotificationStatus('idle');
         }
     };
+    // UI: This function is triggered by the "Generate Podcast" button.
+    const handleGeneratePodcast = async ()=>{
+        if (!analysis) {
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].error("Cannot generate podcast without a source document.");
+            return;
+        }
+        setIsGeneratingPodcast(true);
+        setAudioUrl(null);
+        const toastId = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].loading("Generating podcast summary... This may take a moment.");
+        try {
+            // NOTE: Here we pass the `file_name` in the request body,
+            // which the backend's Pydantic model receives.
+            const response = await fetch(`${("TURBOPACK compile-time value", "http://127.0.0.1:8000")}/api/generate_podcast`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    file_name: selectedDocument
+                })
+            });
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.detail || "Failed to generate podcast.");
+            }
+            const result = await response.json();
+            setAudioUrl(`${("TURBOPACK compile-time value", "http://127.0.0.1:8000")}${result.audio_url}`);
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].success("Podcast generated successfully!", {
+                id: toastId
+            });
+        } catch (error) {
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].error(error.message, {
+                id: toastId
+            });
+        } finally{
+            setIsGeneratingPodcast(false);
+        }
+    };
     const isLoading = status === 'loadingCache' || status === 'loadingAnalysis';
+    console.log(status);
+    console.log(pdfUrl);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "max-w-7xl mx-auto space-y-8",
         children: [
@@ -1666,7 +2034,7 @@ function ReviewPage() {
                         children: "AI Regulatory Review"
                     }, void 0, false, {
                         fileName: "[project]/src/app/review/page.tsx",
-                        lineNumber: 180,
+                        lineNumber: 226,
                         columnNumber: 15
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1674,13 +2042,13 @@ function ReviewPage() {
                         children: "Generate summaries, impact assessments, and timelines from your documents."
                     }, void 0, false, {
                         fileName: "[project]/src/app/review/page.tsx",
-                        lineNumber: 181,
+                        lineNumber: 227,
                         columnNumber: 15
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/review/page.tsx",
-                lineNumber: 179,
+                lineNumber: 225,
                 columnNumber: 11
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1694,7 +2062,7 @@ function ReviewPage() {
                                 children: "Select Document"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/review/page.tsx",
-                                lineNumber: 186,
+                                lineNumber: 232,
                                 columnNumber: 19
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$DocumentSelector$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DocumentSelector"], {
@@ -1704,13 +2072,13 @@ function ReviewPage() {
                                 isLoading: isLoading
                             }, void 0, false, {
                                 fileName: "[project]/src/app/review/page.tsx",
-                                lineNumber: 187,
+                                lineNumber: 233,
                                 columnNumber: 19
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/review/page.tsx",
-                        lineNumber: 185,
+                        lineNumber: 231,
                         columnNumber: 15
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1722,15 +2090,40 @@ function ReviewPage() {
                                 className: "mr-2 h-5 w-5"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/review/page.tsx",
-                                lineNumber: 199,
+                                lineNumber: 245,
                                 columnNumber: 19
                             }, this),
                             status === 'displayingCache' ? 'Re-Analyze' : 'Analyze'
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/review/page.tsx",
-                        lineNumber: 194,
+                        lineNumber: 240,
                         columnNumber: 15
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                        onClick: handleGeneratePodcast,
+                        disabled: isGeneratingPodcast || !analysis,
+                        className: "flex items-center justify-center px-6 h-11 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 disabled:bg-purple-300 disabled:cursor-not-allowed",
+                        children: [
+                            isGeneratingPodcast ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__["Loader2"], {
+                                className: "mr-2 h-5 w-5 animate-spin"
+                            }, void 0, false, {
+                                fileName: "[project]/src/app/review/page.tsx",
+                                lineNumber: 255,
+                                columnNumber: 44
+                            }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$mic$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Mic$3e$__["Mic"], {
+                                className: "mr-2 h-5 w-5"
+                            }, void 0, false, {
+                                fileName: "[project]/src/app/review/page.tsx",
+                                lineNumber: 255,
+                                columnNumber: 96
+                            }, this),
+                            "Podcast"
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/src/app/review/page.tsx",
+                        lineNumber: 250,
+                        columnNumber: 17
                     }, this),
                     status === 'displayingNew' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                         onClick: handleSaveClick,
@@ -1743,7 +2136,7 @@ function ReviewPage() {
                                         className: "mr-2 h-5 w-5"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/review/page.tsx",
-                                        lineNumber: 208,
+                                        lineNumber: 265,
                                         columnNumber: 51
                                     }, this),
                                     " Save Results"
@@ -1755,7 +2148,7 @@ function ReviewPage() {
                                         className: "mr-2 h-5 w-5 animate-spin"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/review/page.tsx",
-                                        lineNumber: 209,
+                                        lineNumber: 266,
                                         columnNumber: 53
                                     }, this),
                                     " Saving..."
@@ -1767,7 +2160,7 @@ function ReviewPage() {
                                         className: "mr-2 h-5 w-5"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/review/page.tsx",
-                                        lineNumber: 210,
+                                        lineNumber: 267,
                                         columnNumber: 52
                                     }, this),
                                     " Saved!"
@@ -1776,13 +2169,13 @@ function ReviewPage() {
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/review/page.tsx",
-                        lineNumber: 203,
+                        lineNumber: 260,
                         columnNumber: 19
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/review/page.tsx",
-                lineNumber: 184,
+                lineNumber: 230,
                 columnNumber: 11
             }, this),
             isLoading && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1792,7 +2185,7 @@ function ReviewPage() {
                         className: "h-12 w-12 text-red-500 animate-spin"
                     }, void 0, false, {
                         fileName: "[project]/src/app/review/page.tsx",
-                        lineNumber: 217,
+                        lineNumber: 274,
                         columnNumber: 19
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1800,13 +2193,13 @@ function ReviewPage() {
                         children: status === 'loadingCache' ? 'Checking for saved analysis...' : `Analyzing ${selectedDocument}...`
                     }, void 0, false, {
                         fileName: "[project]/src/app/review/page.tsx",
-                        lineNumber: 218,
+                        lineNumber: 275,
                         columnNumber: 19
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/review/page.tsx",
-                lineNumber: 216,
+                lineNumber: 273,
                 columnNumber: 15
             }, this),
             status === 'error' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1814,7 +2207,7 @@ function ReviewPage() {
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$alert$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__AlertCircle$3e$__["AlertCircle"], {}, void 0, false, {
                         fileName: "[project]/src/app/review/page.tsx",
-                        lineNumber: 225,
+                        lineNumber: 282,
                         columnNumber: 95
                     }, this),
                     " ",
@@ -1822,10 +2215,10 @@ function ReviewPage() {
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/review/page.tsx",
-                lineNumber: 225,
+                lineNumber: 282,
                 columnNumber: 15
             }, this),
-            analysis && (status === 'displayingCache' || status === 'displayingNew') && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
+            analysis && (status === 'displayingCache' || status === 'displayingNew' || pdfUrl) && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "mt-8 space-y-8",
@@ -1839,19 +2232,19 @@ function ReviewPage() {
                                             children: "Displaying saved analysis."
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/review/page.tsx",
-                                            lineNumber: 236,
+                                            lineNumber: 293,
                                             columnNumber: 33
                                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                             className: "font-semibold text-lg text-green-800",
                                             children: 'New analysis generated. Click "Save Results" to persist.'
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/review/page.tsx",
-                                            lineNumber: 238,
+                                            lineNumber: 295,
                                             columnNumber: 33
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/review/page.tsx",
-                                        lineNumber: 234,
+                                        lineNumber: 291,
                                         columnNumber: 25
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1865,7 +2258,7 @@ function ReviewPage() {
                                                         className: "mr-2 h-5 w-5"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/review/page.tsx",
-                                                        lineNumber: 249,
+                                                        lineNumber: 306,
                                                         columnNumber: 41
                                                     }, this),
                                                     "Notify ",
@@ -1876,13 +2269,13 @@ function ReviewPage() {
                                                 className: "mr-2 h-5 w-5 animate-spin"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/review/page.tsx",
-                                                lineNumber: 256,
+                                                lineNumber: 313,
                                                 columnNumber: 33
                                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2d$big$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle$3e$__["CheckCircle"], {
                                                 className: "mr-2 h-5 w-5"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/review/page.tsx",
-                                                lineNumber: 258,
+                                                lineNumber: 315,
                                                 columnNumber: 33
                                             }, this),
                                             notificationStatus === 'sending' && 'Sending...',
@@ -1890,40 +2283,67 @@ function ReviewPage() {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/review/page.tsx",
-                                        lineNumber: 241,
+                                        lineNumber: 298,
                                         columnNumber: 25
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/review/page.tsx",
-                                lineNumber: 233,
+                                lineNumber: 290,
                                 columnNumber: 21
+                            }, this),
+                            audioUrl && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "mt-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                        className: "text-lg font-semibold mb-2",
+                                        children: "Generated Podcast Summary"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/app/review/page.tsx",
+                                        lineNumber: 326,
+                                        columnNumber: 25
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("audio", {
+                                        controls: true,
+                                        className: "w-full",
+                                        src: audioUrl,
+                                        children: "Your browser does not support the audio element."
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/app/review/page.tsx",
+                                        lineNumber: 327,
+                                        columnNumber: 25
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/app/review/page.tsx",
+                                lineNumber: 325,
+                                columnNumber: 25
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$DocumentInfo$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["RegulatoryInfo"], {
                                 info: analysis.documentInfo
                             }, void 0, false, {
                                 fileName: "[project]/src/app/review/page.tsx",
-                                lineNumber: 266,
+                                lineNumber: 334,
                                 columnNumber: 21
                             }, this),
                             analysis.heatmapData && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$Heatmap$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Heatmap"], {
                                 data: analysis.heatmapData
                             }, void 0, false, {
                                 fileName: "[project]/src/app/review/page.tsx",
-                                lineNumber: 267,
+                                lineNumber: 335,
                                 columnNumber: 46
                             }, this),
                             analysis.impactedLifecycles && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$ImpactedLifecyclesCard$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["ImpactedLifecyclesCard"], {
                                 lifecycles: analysis.impactedLifecycles
                             }, void 0, false, {
                                 fileName: "[project]/src/app/review/page.tsx",
-                                lineNumber: 268,
+                                lineNumber: 336,
                                 columnNumber: 53
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/review/page.tsx",
-                        lineNumber: 231,
+                        lineNumber: 288,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1939,27 +2359,27 @@ function ReviewPage() {
                                         summary: analysis.regulatorySummary
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/review/page.tsx",
-                                        lineNumber: 275,
+                                        lineNumber: 343,
                                         columnNumber: 25
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$ImpactAssessment$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["ImpactAssessment"], {
                                         assessment: analysis.impactAssessment
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/review/page.tsx",
-                                        lineNumber: 276,
+                                        lineNumber: 344,
                                         columnNumber: 25
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$Timeline$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Timeline"], {
                                         dates: analysis.keyDates
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/review/page.tsx",
-                                        lineNumber: 277,
+                                        lineNumber: 345,
                                         columnNumber: 25
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/review/page.tsx",
-                                lineNumber: 274,
+                                lineNumber: 342,
                                 columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1968,14 +2388,14 @@ function ReviewPage() {
                                     className: "h-full overflow-y-auto",
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$PdfViewer$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                         fileUrl: pdfUrl
-                                    }, void 0, false, {
+                                    }, pdfUrl, false, {
                                         fileName: "[project]/src/app/review/page.tsx",
-                                        lineNumber: 284,
+                                        lineNumber: 352,
                                         columnNumber: 33
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/review/page.tsx",
-                                    lineNumber: 283,
+                                    lineNumber: 351,
                                     columnNumber: 29
                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "flex items-center justify-center h-full bg-gray-100 rounded-lg border-2 border-dashed",
@@ -1984,23 +2404,23 @@ function ReviewPage() {
                                         children: "No document to display."
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/review/page.tsx",
-                                        lineNumber: 288,
+                                        lineNumber: 356,
                                         columnNumber: 33
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/review/page.tsx",
-                                    lineNumber: 287,
+                                    lineNumber: 355,
                                     columnNumber: 29
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/review/page.tsx",
-                                lineNumber: 281,
+                                lineNumber: 349,
                                 columnNumber: 21
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/review/page.tsx",
-                        lineNumber: 272,
+                        lineNumber: 340,
                         columnNumber: 17
                     }, this)
                 ]
@@ -2012,7 +2432,7 @@ function ReviewPage() {
                         className: "mx-auto h-12 w-12 text-gray-400"
                     }, void 0, false, {
                         fileName: "[project]/src/app/review/page.tsx",
-                        lineNumber: 298,
+                        lineNumber: 366,
                         columnNumber: 19
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -2020,7 +2440,7 @@ function ReviewPage() {
                         children: "Ready for Analysis"
                     }, void 0, false, {
                         fileName: "[project]/src/app/review/page.tsx",
-                        lineNumber: 299,
+                        lineNumber: 367,
                         columnNumber: 19
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2028,23 +2448,23 @@ function ReviewPage() {
                         children: selectedDocument ? 'A saved analysis for this document was not found. Click "Analyze" to generate a new report.' : 'Please select a document to begin.'
                     }, void 0, false, {
                         fileName: "[project]/src/app/review/page.tsx",
-                        lineNumber: 300,
+                        lineNumber: 368,
                         columnNumber: 19
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/review/page.tsx",
-                lineNumber: 297,
+                lineNumber: 365,
                 columnNumber: 15
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/review/page.tsx",
-        lineNumber: 178,
+        lineNumber: 224,
         columnNumber: 7
     }, this);
 }
-_s(ReviewPage, "KxGO/AKCnBxDJJSGD8o1nKzi2dk=");
+_s(ReviewPage, "ztsQIM7H1cBwPkUl993B5XQ9NSE=");
 _c = ReviewPage;
 var _c;
 __turbopack_context__.k.register(_c, "ReviewPage");
