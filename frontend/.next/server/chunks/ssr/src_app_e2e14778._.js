@@ -1075,7 +1075,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$zoom$2d$in$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ZoomIn$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/zoom-in.js [app-ssr] (ecmascript) <export default as ZoomIn>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$zoom$2d$out$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ZoomOut$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/zoom-out.js [app-ssr] (ecmascript) <export default as ZoomOut>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$rotate$2d$ccw$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__RotateCcw$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/rotate-ccw.js [app-ssr] (ecmascript) <export default as RotateCcw>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$alert$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__AlertCircle$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/circle-alert.js [app-ssr] (ecmascript) <export default as AlertCircle>"); // Added missing import
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$alert$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__AlertCircle$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/circle-alert.js [app-ssr] (ecmascript) <export default as AlertCircle>");
 "use client";
 ;
 ;
@@ -1087,51 +1087,20 @@ let Document;
 let Page;
 let pdfjs;
 function PdfViewer({ fileUrl }) {
+    const [isClient, setIsClient] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     const [numPages, setNumPages] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
     const [pageNumber, setPageNumber] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(1);
-    const [isClient, setIsClient] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     const [scale, setScale] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(1.0);
     const [rotation, setRotation] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(0);
     const [isLoading, setIsLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     const [loadError, setLoadError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
-    const [useIframeFallback, setUseIframeFallback] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
-    const [pdfBlobUrl, setPdfBlobUrl] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
     console.log('PdfViewer render:', {
         fileUrl,
         isClient,
-        Document: !Document,
-        Page: !Page,
-        isLoading,
-        loadError,
-        useIframeFallback
+        Document: !!Document,
+        Page: !!Page
     });
-    // Debug when Document component should render
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-        if (fileUrl && isClient && Document && Page && !useIframeFallback) {
-            console.log('Document component should render with:', {
-                fileUrl,
-                Document: !!Document,
-                Page: !!Page
-            });
-        }
-    }, [
-        fileUrl,
-        isClient,
-        Document,
-        Page,
-        useIframeFallback
-    ]);
-    // Cleanup blob URL when component unmounts or fileUrl changes
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-        return ()=>{
-            if (pdfBlobUrl) {
-                console.log('Cleaning up blob URL:', pdfBlobUrl);
-                URL.revokeObjectURL(pdfBlobUrl);
-            }
-        };
-    }, [
-        pdfBlobUrl
-    ]);
+    // Initialize client and load react-pdf
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
         setIsClient(true);
         // Set up the worker immediately
@@ -1160,76 +1129,14 @@ function PdfViewer({ fileUrl }) {
     // Reset state when fileUrl changes
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
         if (fileUrl) {
-            console.log('FileUrl changed, testing accessibility:', fileUrl);
+            console.log('FileUrl changed:', fileUrl);
             setPageNumber(1);
             setScale(1.0);
             setRotation(0);
             setNumPages(null);
             setIsLoading(true);
             setLoadError(null);
-            setUseIframeFallback(false);
-            setPdfBlobUrl(null); // Clear previous blob URL
-            // Test if the PDF URL is accessible with more detailed logging
-            console.log('Testing PDF accessibility...');
-            fetch(fileUrl, {
-                method: 'GET'
-            }).then((response)=>{
-                console.log('PDF URL accessibility test:', {
-                    status: response.status,
-                    ok: response.ok,
-                    contentType: response.headers.get('content-type'),
-                    contentLength: response.headers.get('content-length'),
-                    url: fileUrl
-                });
-                if (!response.ok) {
-                    throw new Error(`PDF not accessible: ${response.status} ${response.statusText}`);
-                }
-                // If accessible, log success and continue
-                console.log('PDF URL is accessible, proceeding with loading...');
-                // Test if we can actually read the PDF data
-                return response.blob();
-            }).then((blob)=>{
-                console.log('PDF blob received:', {
-                    size: blob.size,
-                    type: blob.type
-                });
-                if (blob.size === 0) {
-                    throw new Error('PDF file is empty');
-                }
-                console.log('PDF blob is valid, creating blob URL...');
-                // Create a blob URL for the PDF
-                const blobUrl = URL.createObjectURL(blob);
-                console.log('Created blob URL:', blobUrl);
-                setPdfBlobUrl(blobUrl);
-            }).catch((error)=>{
-                console.error('PDF URL accessibility error:', error);
-                setLoadError(`Failed to access PDF: ${error.message}`);
-                setIsLoading(false);
-            });
-            // Add a timeout to detect if PDF loading is hanging (reduced from 10s to 5s)
-            const timeoutId = setTimeout(()=>{
-                if (isLoading) {
-                    console.warn('PDF loading timeout - still loading after 5 seconds');
-                    console.warn('Current state:', {
-                        isLoading,
-                        numPages,
-                        loadError
-                    });
-                    setLoadError('PDF loading timed out. Please try again.');
-                    setIsLoading(false);
-                    // Automatically switch to iframe fallback after timeout
-                    if (!useIframeFallback) {
-                        console.log('Automatically switching to iframe fallback due to timeout');
-                        setUseIframeFallback(true);
-                    }
-                }
-            }, 5000);
-            return ()=>{
-                console.log('Cleaning up PDF loading timeout');
-                clearTimeout(timeoutId);
-            };
         } else {
-            console.log('No fileUrl provided, resetting state');
             setIsLoading(false);
             setLoadError(null);
         }
@@ -1242,7 +1149,7 @@ function PdfViewer({ fileUrl }) {
             fileUrl
         });
         setNumPages(numPages);
-        setPageNumber(1); // Reset to first page on new document load
+        setPageNumber(1);
         setIsLoading(false);
         setLoadError(null);
     }
@@ -1251,18 +1158,6 @@ function PdfViewer({ fileUrl }) {
         setIsLoading(false);
         setLoadError(`Error loading PDF: ${error.message}`);
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["toast"].error(`Error while loading PDF: ${error.message}`);
-        // After multiple failures, try iframe fallback
-        if (!useIframeFallback) {
-            console.log('Switching to iframe fallback...');
-            setUseIframeFallback(true);
-        }
-    }
-    function onDocumentLoadProgress({ loaded, total }) {
-        console.log('PDF loading progress:', {
-            loaded,
-            total,
-            percentage: total ? loaded / total * 100 : 0
-        });
     }
     function goToPrevPage() {
         setPageNumber((prevPageNumber)=>Math.max(prevPageNumber - 1, 1));
@@ -1290,7 +1185,7 @@ function PdfViewer({ fileUrl }) {
                 className: "h-10 w-10 animate-spin"
             }, void 0, false, {
                 fileName: "[project]/src/app/components/PdfViewer.tsx",
-                lineNumber: 227,
+                lineNumber: 123,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1298,7 +1193,7 @@ function PdfViewer({ fileUrl }) {
                 children: "Loading Document..."
             }, void 0, false, {
                 fileName: "[project]/src/app/components/PdfViewer.tsx",
-                lineNumber: 228,
+                lineNumber: 124,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1306,21 +1201,13 @@ function PdfViewer({ fileUrl }) {
                 children: fileUrl
             }, void 0, false, {
                 fileName: "[project]/src/app/components/PdfViewer.tsx",
-                lineNumber: 229,
-                columnNumber: 7
-            }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                className: "text-xs text-gray-300 mt-1",
-                children: "This may take a few moments for large files"
-            }, void 0, false, {
-                fileName: "[project]/src/app/components/PdfViewer.tsx",
-                lineNumber: 230,
+                lineNumber: 125,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/components/PdfViewer.tsx",
-        lineNumber: 226,
+        lineNumber: 122,
         columnNumber: 5
     }, this);
     const errorDisplay = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1330,7 +1217,7 @@ function PdfViewer({ fileUrl }) {
                 className: "h-10 w-10"
             }, void 0, false, {
                 fileName: "[project]/src/app/components/PdfViewer.tsx",
-                lineNumber: 236,
+                lineNumber: 131,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1338,7 +1225,7 @@ function PdfViewer({ fileUrl }) {
                 children: "Failed to load PDF"
             }, void 0, false, {
                 fileName: "[project]/src/app/components/PdfViewer.tsx",
-                lineNumber: 237,
+                lineNumber: 132,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1346,74 +1233,25 @@ function PdfViewer({ fileUrl }) {
                 children: loadError
             }, void 0, false, {
                 fileName: "[project]/src/app/components/PdfViewer.tsx",
-                lineNumber: 238,
+                lineNumber: 133,
                 columnNumber: 7
             }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "flex gap-2 mt-4",
-                children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                        onClick: ()=>{
-                            setIsLoading(true);
-                            setLoadError(null);
-                        },
-                        className: "px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600",
-                        children: "Retry"
-                    }, void 0, false, {
-                        fileName: "[project]/src/app/components/PdfViewer.tsx",
-                        lineNumber: 240,
-                        columnNumber: 9
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                        onClick: ()=>{
-                            // Open PDF in new tab as fallback
-                            window.open(fileUrl, '_blank');
-                        },
-                        className: "px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600",
-                        children: "Open in New Tab"
-                    }, void 0, false, {
-                        fileName: "[project]/src/app/components/PdfViewer.tsx",
-                        lineNumber: 249,
-                        columnNumber: 9
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                        onClick: ()=>{
-                            setUseIframeFallback(true);
-                            setLoadError(null);
-                        },
-                        className: "px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600",
-                        children: "Use Simple Viewer"
-                    }, void 0, false, {
-                        fileName: "[project]/src/app/components/PdfViewer.tsx",
-                        lineNumber: 258,
-                        columnNumber: 9
-                    }, this)
-                ]
-            }, void 0, true, {
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                onClick: ()=>{
+                    setIsLoading(true);
+                    setLoadError(null);
+                },
+                className: "mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600",
+                children: "Retry"
+            }, void 0, false, {
                 fileName: "[project]/src/app/components/PdfViewer.tsx",
-                lineNumber: 239,
+                lineNumber: 134,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/components/PdfViewer.tsx",
-        lineNumber: 235,
-        columnNumber: 5
-    }, this);
-    const iframeFallback = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "w-full h-full",
-        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("iframe", {
-            src: pdfBlobUrl || fileUrl,
-            className: "w-full h-full border-0",
-            title: "PDF Document"
-        }, void 0, false, {
-            fileName: "[project]/src/app/components/PdfViewer.tsx",
-            lineNumber: 273,
-            columnNumber: 7
-        }, this)
-    }, void 0, false, {
-        fileName: "[project]/src/app/components/PdfViewer.tsx",
-        lineNumber: 272,
+        lineNumber: 130,
         columnNumber: 5
     }, this);
     // Don't render anything until client-side
@@ -1429,7 +1267,7 @@ function PdfViewer({ fileUrl }) {
                             className: "h-10 w-10 animate-spin"
                         }, void 0, false, {
                             fileName: "[project]/src/app/components/PdfViewer.tsx",
-                            lineNumber: 287,
+                            lineNumber: 152,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1437,23 +1275,23 @@ function PdfViewer({ fileUrl }) {
                             children: "Loading PDF Viewer..."
                         }, void 0, false, {
                             fileName: "[project]/src/app/components/PdfViewer.tsx",
-                            lineNumber: 288,
+                            lineNumber: 153,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/components/PdfViewer.tsx",
-                    lineNumber: 286,
+                    lineNumber: 151,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/components/PdfViewer.tsx",
-                lineNumber: 285,
+                lineNumber: 150,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/src/app/components/PdfViewer.tsx",
-            lineNumber: 284,
+            lineNumber: 149,
             columnNumber: 7
         }, this);
     }
@@ -1462,45 +1300,29 @@ function PdfViewer({ fileUrl }) {
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "flex-grow overflow-auto p-4",
-                children: loadError ? errorDisplay : useIframeFallback ? iframeFallback : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(Document, {
-                    file: pdfBlobUrl || fileUrl,
+                children: loadError ? errorDisplay : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(Document, {
+                    file: fileUrl,
                     onLoadSuccess: onDocumentLoadSuccess,
                     onLoadError: onDocumentLoadError,
-                    onLoadProgress: onDocumentLoadProgress,
                     loading: loadingSpinner,
                     className: "flex justify-center",
-                    error: errorDisplay,
-                    onSourceSuccess: ()=>{
-                        console.log('Document source loaded successfully');
-                    },
-                    onSourceError: (error)=>{
-                        console.error('Document source error:', error);
-                        setLoadError(`Source error: ${error.message}`);
-                    },
                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(Page, {
                         pageNumber: pageNumber,
                         scale: scale,
-                        rotate: rotation,
-                        onLoadSuccess: ()=>{
-                            console.log('PDF page loaded successfully');
-                        },
-                        onLoadError: (error)=>{
-                            console.error('PDF page load error:', error);
-                            setLoadError(`Page load error: ${error.message}`);
-                        }
+                        rotate: rotation
                     }, void 0, false, {
                         fileName: "[project]/src/app/components/PdfViewer.tsx",
-                        lineNumber: 321,
+                        lineNumber: 175,
                         columnNumber: 13
                     }, this)
-                }, `${fileUrl}-${Date.now()}`, false, {
+                }, fileUrl, false, {
                     fileName: "[project]/src/app/components/PdfViewer.tsx",
-                    lineNumber: 304,
+                    lineNumber: 167,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/components/PdfViewer.tsx",
-                lineNumber: 298,
+                lineNumber: 163,
                 columnNumber: 7
             }, this),
             numPages && !loadError && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1518,12 +1340,12 @@ function PdfViewer({ fileUrl }) {
                                     className: "h-5 w-5"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/components/PdfViewer.tsx",
-                                    lineNumber: 348,
+                                    lineNumber: 195,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/components/PdfViewer.tsx",
-                                lineNumber: 342,
+                                lineNumber: 189,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1536,7 +1358,7 @@ function PdfViewer({ fileUrl }) {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/components/PdfViewer.tsx",
-                                lineNumber: 351,
+                                lineNumber: 198,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1548,18 +1370,18 @@ function PdfViewer({ fileUrl }) {
                                     className: "h-5 w-5"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/components/PdfViewer.tsx",
-                                    lineNumber: 361,
+                                    lineNumber: 208,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/components/PdfViewer.tsx",
-                                lineNumber: 355,
+                                lineNumber: 202,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/components/PdfViewer.tsx",
-                        lineNumber: 341,
+                        lineNumber: 188,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1574,12 +1396,12 @@ function PdfViewer({ fileUrl }) {
                                     className: "h-5 w-5"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/components/PdfViewer.tsx",
-                                    lineNumber: 373,
+                                    lineNumber: 220,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/components/PdfViewer.tsx",
-                                lineNumber: 367,
+                                lineNumber: 214,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1590,7 +1412,7 @@ function PdfViewer({ fileUrl }) {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/components/PdfViewer.tsx",
-                                lineNumber: 376,
+                                lineNumber: 223,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1602,12 +1424,12 @@ function PdfViewer({ fileUrl }) {
                                     className: "h-5 w-5"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/components/PdfViewer.tsx",
-                                    lineNumber: 386,
+                                    lineNumber: 233,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/components/PdfViewer.tsx",
-                                lineNumber: 380,
+                                lineNumber: 227,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1618,12 +1440,12 @@ function PdfViewer({ fileUrl }) {
                                     className: "h-5 w-5"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/components/PdfViewer.tsx",
-                                    lineNumber: 394,
+                                    lineNumber: 241,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/components/PdfViewer.tsx",
-                                lineNumber: 389,
+                                lineNumber: 236,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1633,25 +1455,25 @@ function PdfViewer({ fileUrl }) {
                                 children: "Reset"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/components/PdfViewer.tsx",
-                                lineNumber: 397,
+                                lineNumber: 244,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/components/PdfViewer.tsx",
-                        lineNumber: 366,
+                        lineNumber: 213,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/components/PdfViewer.tsx",
-                lineNumber: 339,
+                lineNumber: 186,
                 columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/components/PdfViewer.tsx",
-        lineNumber: 296,
+        lineNumber: 161,
         columnNumber: 5
     }, this);
 }

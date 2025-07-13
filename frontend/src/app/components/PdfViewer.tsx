@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import { Loader2, ChevronLeft, ChevronRight, ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
-import { AlertCircle } from 'lucide-react'; // Added missing import
+import { AlertCircle } from 'lucide-react';
 
 // Dynamic imports to avoid SSR issues
 let Document: any;
@@ -15,57 +15,27 @@ interface PdfViewerProps {
 }
 
 export default function PdfViewer({ fileUrl }: PdfViewerProps) {
+  const [isClient, setIsClient] = useState(false);
   const [numPages, setNumPages] = useState<number | null>(null);
   const [pageNumber, setPageNumber] = useState(1);
-  const [isClient, setIsClient] = useState(false);
   const [scale, setScale] = useState(1.0);
   const [rotation, setRotation] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
-  const [useIframeFallback, setUseIframeFallback] = useState(false);
-  const [pdfBlobUrl, setPdfBlobUrl] = useState<string | null>(null);
 
-  console.log('PdfViewer render:', { fileUrl, isClient, Document: !Document, Page: !Page, isLoading, loadError, useIframeFallback });
+  console.log('PdfViewer render:', { fileUrl, isClient, Document: !!Document, Page: !!Page });
 
-  // Debug when Document component should render
-  useEffect(() => {
-    if (fileUrl && isClient && Document && Page && !useIframeFallback) {
-      console.log('Document component should render with:', { fileUrl, Document: !!Document, Page: !!Page });
-    }
-  }, [fileUrl, isClient, Document, Page, useIframeFallback]);
-
-  // Cleanup blob URL when component unmounts or fileUrl changes
-  useEffect(() => {
-    return () => {
-      if (pdfBlobUrl) {
-        console.log('Cleaning up blob URL:', pdfBlobUrl);
-        URL.revokeObjectURL(pdfBlobUrl);
-      }
-    };
-  }, [pdfBlobUrl]);
-
+  // Initialize client and load react-pdf
   useEffect(() => {
     setIsClient(true);
     
     // Set up the worker immediately
     if (typeof window !== 'undefined') {
-      // Import and set up PDF.js worker immediately
       import('react-pdf').then((module) => {
         const { pdfjs } = module;
-        // Use the correct worker path that matches react-pdf version
         pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js';
         console.log('PDF.js worker set to:', pdfjs.GlobalWorkerOptions.workerSrc);
         console.log('PDF.js version:', pdfjs.version);
-        
-        // Test worker loading
-        try {
-          const worker = new Worker(pdfjs.GlobalWorkerOptions.workerSrc);
-          worker.terminate(); // Clean up test worker
-          console.log('PDF.js worker loaded successfully');
-        } catch (error) {
-          console.error('PDF.js worker loading failed:', error);
-          setLoadError('Failed to load PDF worker');
-        }
       }).catch(error => {
         console.error('Failed to import react-pdf:', error);
         setLoadError('Failed to load PDF viewer components');
@@ -95,78 +65,14 @@ export default function PdfViewer({ fileUrl }: PdfViewerProps) {
   // Reset state when fileUrl changes
   useEffect(() => {
     if (fileUrl) {
-      console.log('FileUrl changed, testing accessibility:', fileUrl);
+      console.log('FileUrl changed:', fileUrl);
       setPageNumber(1);
       setScale(1.0);
       setRotation(0);
       setNumPages(null);
       setIsLoading(true);
       setLoadError(null);
-      setUseIframeFallback(false);
-      setPdfBlobUrl(null); // Clear previous blob URL
-      
-      // Test if the PDF URL is accessible with more detailed logging
-      console.log('Testing PDF accessibility...');
-      fetch(fileUrl, { method: 'GET' })
-        .then(response => {
-          console.log('PDF URL accessibility test:', { 
-            status: response.status, 
-            ok: response.ok,
-            contentType: response.headers.get('content-type'),
-            contentLength: response.headers.get('content-length'),
-            url: fileUrl
-          });
-          
-          if (!response.ok) {
-            throw new Error(`PDF not accessible: ${response.status} ${response.statusText}`);
-          }
-          
-          // If accessible, log success and continue
-          console.log('PDF URL is accessible, proceeding with loading...');
-          
-          // Test if we can actually read the PDF data
-          return response.blob();
-        })
-        .then(blob => {
-          console.log('PDF blob received:', { size: blob.size, type: blob.type });
-          if (blob.size === 0) {
-            throw new Error('PDF file is empty');
-          }
-          console.log('PDF blob is valid, creating blob URL...');
-          
-          // Create a blob URL for the PDF
-          const blobUrl = URL.createObjectURL(blob);
-          console.log('Created blob URL:', blobUrl);
-          setPdfBlobUrl(blobUrl);
-        })
-        .catch(error => {
-          console.error('PDF URL accessibility error:', error);
-          setLoadError(`Failed to access PDF: ${error.message}`);
-          setIsLoading(false);
-        });
-      
-      // Add a timeout to detect if PDF loading is hanging (reduced from 10s to 5s)
-      const timeoutId = setTimeout(() => {
-        if (isLoading) {
-          console.warn('PDF loading timeout - still loading after 5 seconds');
-          console.warn('Current state:', { isLoading, numPages, loadError });
-          setLoadError('PDF loading timed out. Please try again.');
-          setIsLoading(false);
-          
-          // Automatically switch to iframe fallback after timeout
-          if (!useIframeFallback) {
-            console.log('Automatically switching to iframe fallback due to timeout');
-            setUseIframeFallback(true);
-          }
-        }
-      }, 5000);
-      
-      return () => {
-        console.log('Cleaning up PDF loading timeout');
-        clearTimeout(timeoutId);
-      };
     } else {
-      console.log('No fileUrl provided, resetting state');
       setIsLoading(false);
       setLoadError(null);
     }
@@ -175,7 +81,7 @@ export default function PdfViewer({ fileUrl }: PdfViewerProps) {
   function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
     console.log('PDF loaded successfully:', { numPages, fileUrl });
     setNumPages(numPages);
-    setPageNumber(1); // Reset to first page on new document load
+    setPageNumber(1);
     setIsLoading(false);
     setLoadError(null);
   }
@@ -185,16 +91,6 @@ export default function PdfViewer({ fileUrl }: PdfViewerProps) {
     setIsLoading(false);
     setLoadError(`Error loading PDF: ${error.message}`);
     toast.error(`Error while loading PDF: ${error.message}`);
-    
-    // After multiple failures, try iframe fallback
-    if (!useIframeFallback) {
-      console.log('Switching to iframe fallback...');
-      setUseIframeFallback(true);
-    }
-  }
-
-  function onDocumentLoadProgress({ loaded, total }: { loaded: number; total: number }): void {
-    console.log('PDF loading progress:', { loaded, total, percentage: total ? (loaded / total) * 100 : 0 });
   }
 
   function goToPrevPage() {
@@ -227,7 +123,6 @@ export default function PdfViewer({ fileUrl }: PdfViewerProps) {
       <Loader2 className="h-10 w-10 animate-spin" />
       <p className="mt-4">Loading Document...</p>
       <p className="text-sm text-gray-400 mt-2">{fileUrl}</p>
-      <p className="text-xs text-gray-300 mt-1">This may take a few moments for large files</p>
     </div>
   );
 
@@ -236,45 +131,15 @@ export default function PdfViewer({ fileUrl }: PdfViewerProps) {
       <AlertCircle className="h-10 w-10" />
       <p className="mt-4 text-center">Failed to load PDF</p>
       <p className="text-sm text-gray-400 mt-2 text-center">{loadError}</p>
-      <div className="flex gap-2 mt-4">
-        <button 
-          onClick={() => {
-            setIsLoading(true);
-            setLoadError(null);
-          }}
-          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-        >
-          Retry
-        </button>
-        <button 
-          onClick={() => {
-            // Open PDF in new tab as fallback
-            window.open(fileUrl, '_blank');
-          }}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        >
-          Open in New Tab
-        </button>
-        <button 
-          onClick={() => {
-            setUseIframeFallback(true);
-            setLoadError(null);
-          }}
-          className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-        >
-          Use Simple Viewer
-        </button>
-      </div>
-    </div>
-  );
-
-  const iframeFallback = (
-    <div className="w-full h-full">
-      <iframe
-        src={pdfBlobUrl || fileUrl}
-        className="w-full h-full border-0"
-        title="PDF Document"
-      />
+      <button 
+        onClick={() => {
+          setIsLoading(true);
+          setLoadError(null);
+        }}
+        className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+      >
+        Retry
+      </button>
     </div>
   );
 
@@ -298,37 +163,19 @@ export default function PdfViewer({ fileUrl }: PdfViewerProps) {
       <div className="flex-grow overflow-auto p-4">
         {loadError ? (
           errorDisplay
-        ) : useIframeFallback ? (
-          iframeFallback
         ) : (
           <Document
-            key={`${fileUrl}-${Date.now()}`}
-            file={pdfBlobUrl || fileUrl} // Use blob URL if available, otherwise original fileUrl
+            key={fileUrl}
+            file={fileUrl}
             onLoadSuccess={onDocumentLoadSuccess}
             onLoadError={onDocumentLoadError}
-            onLoadProgress={onDocumentLoadProgress}
             loading={loadingSpinner}
             className="flex justify-center"
-            error={errorDisplay}
-            onSourceSuccess={() => {
-              console.log('Document source loaded successfully');
-            }}
-            onSourceError={(error: Error) => {
-              console.error('Document source error:', error);
-              setLoadError(`Source error: ${error.message}`);
-            }}
           >
             <Page 
               pageNumber={pageNumber} 
               scale={scale}
               rotate={rotation}
-              onLoadSuccess={() => {
-                console.log('PDF page loaded successfully');
-              }}
-              onLoadError={(error: Error) => {
-                console.error('PDF page load error:', error);
-                setLoadError(`Page load error: ${error.message}`);
-              }}
             />
           </Document>
         )}
