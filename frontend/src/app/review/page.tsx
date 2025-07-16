@@ -8,7 +8,7 @@ import { Timeline } from '@/app/components/Timeline';
 import { DocumentSelector } from '@/app/components/DocumentSelector';
 import { Heatmap } from '@/app/components/Heatmap';
 import { ImpactedLifecyclesCard } from '@/app/components/ImpactedLifecyclesCard';
-import { Loader2, Search, Info, Save, CheckCircle, AlertCircle, Send, RefreshCw, Mic } from 'lucide-react';
+import { Loader2, Search, Info, Save, CheckCircle, AlertCircle, Send, RefreshCw, Mic, Eye, EyeOff } from 'lucide-react';
 import PdfViewer from "@/app/components/PdfViewer"; 
 import { toast } from "react-hot-toast";
 
@@ -26,6 +26,7 @@ export default function ReviewPage() {
 
   const [isGeneratingPodcast, setIsGeneratingPodcast] = useState(false);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const [showPdf, setShowPdf] = useState(true);
 
   const impactedDivisions = useMemo(() => {
     if (!analysis?.heatmapData) return [];
@@ -336,27 +337,40 @@ export default function ReviewPage() {
                     {analysis.impactedLifecycles && <ImpactedLifecyclesCard lifecycles={analysis.impactedLifecycles} />}
                 </div>
 
+                {/* PDF Toggle Button */}
+                <div className="flex justify-end mt-4">
+                  <button
+                    onClick={() => setShowPdf((prev) => !prev)}
+                    className="flex items-center gap-2 px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded shadow"
+                  >
+                    {showPdf ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                    {showPdf ? 'Hide PDF' : 'Show PDF'}
+                  </button>
+                </div>
+
                 {/* Two-column layout starting from RegulatorySummary */}
-                <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8" style={{ height: 'calc(100vh - 400px)' }}>
+                <div className={`mt-8 grid gap-8 ${showPdf ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1'}`} style={{ height: 'calc(100vh - 400px)' }}>
                     {/* Left Column: Review Details */}
-                    <div className="flex flex-col space-y-8 overflow-y-auto pr-4">
+                    <div className={`flex flex-col space-y-8 overflow-y-auto pr-4 ${showPdf ? '' : 'col-span-1'}`}>
                         <RegulatorySummary summary={analysis.regulatorySummary} />
                         <ImpactAssessment assessment={analysis.impactAssessment} />
                         <Timeline dates={analysis.keyDates} />
                     </div>
 
                     {/* Right Column: PDF Document Viewer */}
-                    <div className="h-full overflow-hidden">
-                        {pdfUrl ? (
-                            <div className="h-full overflow-y-auto">
-                                <PdfViewer key={pdfUrl} fileUrl={pdfUrl} />
-                            </div>
-                        ) : (
-                            <div className="flex items-center justify-center h-full bg-gray-100 rounded-lg border-2 border-dashed">
-                                <p className="text-gray-500">No document to display.</p>
-                            </div>
-                        )}
-                    </div>
+                    {showPdf && (
+                      <div className="h-full overflow-hidden">
+                          {pdfUrl ? (
+                              <div className="h-full overflow-y-auto">
+                                  <PdfViewer key={pdfUrl} fileUrl={pdfUrl} />
+                              </div>
+                          ) : (
+                              <div className="flex items-center justify-center h-full bg-gray-100 rounded-lg border-2 border-dashed">
+                                  <p className="text-gray-500">No document to display.</p>
+                              </div>
+                          )}
+                      </div>
+                    )}
                 </div>
             </>
           )}
